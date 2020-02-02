@@ -46,7 +46,7 @@
   "scaffoldConfig": {
     "builder": "ice-scripts",
     "name": "ice-design-cms",
-    "title": "CMS 内容管理系统",
+    "title": "lengband 博客管理系统",
     "categories": [
       "行业领域"
     ],
@@ -68,5 +68,8 @@
     "type": "git",
     "url": "https://github.com/ice-lab/react-materials/tree/master/scaffolds/ice-design-cms"
   },
-  "title": "lengband-blog-admin"
+  "title": "lengband-blog-admin",
+  "ideMode": {
+    "name": "ice-react"
+  }
 }

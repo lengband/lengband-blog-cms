@@ -11,8 +11,7 @@ const TabPane = Tab.Item;
 const tabs = [
   { tab: '全部', key: 'all' },
   { tab: '已发布', key: 'released' },
-  { tab: '审核中', key: 'review' },
-  { tab: '已拒绝', key: 'rejected' },
+  { tab: '待发布', key: 'review' },
 ];
 
 export default function TabTable() {

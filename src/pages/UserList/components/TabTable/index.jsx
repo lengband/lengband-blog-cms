@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import IceContainer from '@icedesign/container';
-import { Tab } from '@alifd/next';
 import axios from 'axios';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
 
-const TabPane = Tab.Item;
-
-const tabs = [{ tab: '全部', key: 'all' }, { tab: '审核中', key: 'review' }];
-
 export default function TabTable() {
   const [dataSource, setDataSource] = useState({});
-  const [tabKey, setTabKey] = useState('all');
+
+  const getFormValues = (dataIndex, values) => {
+    console.log({ dataIndex, values }, 'getFormValues');
+  };
+
+  const handleRemove = (value, index, record) => {
+    console.log({ value, index, record }, 'handleRemove');
+  };
 
   const columns = [
     {
@@ -95,36 +97,13 @@ export default function TabTable() {
       });
   }, []);
 
-  const getFormValues = (dataIndex, values) => {
-    dataSource[tabKey][dataIndex] = values;
-    setDataSource({ ...dataSource });
-  };
-
-  const handleRemove = (value, index) => {
-    dataSource[tabKey].splice(index, 1);
-    setDataSource({ ...dataSource });
-  };
-
-  const handleTabChange = (key) => {
-    setTabKey(key);
-  };
-
   return (
     <div className="tab-table">
       <IceContainer style={{ padding: '0 20px 20px' }}>
-        <Tab onChange={handleTabChange}>
-          {tabs.map((item) => {
-            return (
-              <TabPane title={item.tab} key={item.key}>
-                <CustomTable
-                  dataSource={dataSource[tabKey]}
-                  columns={columns}
-                  hasBorder={false}
-                />
-              </TabPane>
-            );
-          })}
-        </Tab>
+        <CustomTable
+          dataSource={dataSource}
+          columns={columns}
+          hasBorder={false} />
       </IceContainer>
     </div>
   );
