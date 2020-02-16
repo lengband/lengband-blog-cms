@@ -18,7 +18,7 @@ module.exports = {
     historyApiFallback: true, // 使用 BrowserHistory，去掉url中的#
   },
   proxy: {
-    '/api': {
+    '/api/': {
       enable: true,
       target: 'http://127.0.0.1:7001',
     },

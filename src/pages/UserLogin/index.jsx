@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Input, Button, Checkbox, Message } from '@alifd/next';
@@ -8,12 +9,15 @@ import {
 } from '@icedesign/form-binder';
 import IceIcon from '@icedesign/foundation-symbol';
 import styles from './index.module.scss';
+import { request } from '@/utils/request';
+import { api } from '@/utils/api';
+import { setToken } from '@/utils/auth';
 
-const UserLogin = (props) => {
+const UserLogin = props => {
   const [value, setValue] = useState({
-    username: '',
+    name: '',
     password: '',
-    checkbox: false,
+    checkbox: true,
   });
 
   let formRef;
@@ -24,12 +28,17 @@ const UserLogin = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    formRef.validateAll((errors, values) => {
+    formRef.validateAll(async (errors, values) => {
       if (errors) {
         console.log('errors', errors);
         return;
       }
-      console.log(values);
+      const { data } = await request({
+        url: api.login(),
+        method: 'post',
+        data: values,
+     });
+     setToken(data.token)
       Message.success('登录成功');
       props.history.push('/');
     });
@@ -46,7 +55,7 @@ const UserLogin = (props) => {
         <div className={styles.formItems}>
           <div className={styles.formItem}>
             <IceIcon type="person" size="small" className={styles.inputIcon} />
-            <IceFormBinder name="username" required message="必填">
+            <IceFormBinder name="name" required message="必填">
               <Input
                 size="large"
                 maxLength={20}
@@ -54,7 +63,7 @@ const UserLogin = (props) => {
                 className={styles.inputCol}
               />
             </IceFormBinder>
-            <IceFormError name="username" />
+            <IceFormError name="name" />
           </div>
 
           <div className={styles.formItem}>
@@ -71,7 +80,7 @@ const UserLogin = (props) => {
           </div>
 
           <div className={styles.formItem}>
-            <IceFormBinder name="checkbox">
+            <IceFormBinder name="checkbox" valuePropName="checked">
               <Checkbox className={styles.checkbox}>记住账号</Checkbox>
             </IceFormBinder>
           </div>

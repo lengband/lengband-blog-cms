@@ -18,6 +18,8 @@
     "enquire-js": "^0.1.2",
     "immutable": "^3.8.2",
     "is-hotkey": "^0.1.1",
+    "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.23.0",
     "prop-types": "^15.5.8",
     "react": "^16.4.1",
