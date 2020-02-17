@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+/* eslint-disable */
+
+import React, { useState, useEffect } from 'react';
 import IceContainer from '@icedesign/container';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
+import { useRequest } from '@/utils/request';
+import { api } from '@/utils/api';
+import _ from 'lodash'
 
 const MOCK_DATA = [
   {
@@ -58,25 +63,29 @@ const MOCK_DATA = [
 ];
 
 export default function TabTable() {
-  const [dataSource, setDataSource] = useState(MOCK_DATA);
+  // const [dataSource, setDataSource] = useState(MOCK_DATA);
+  const { response: tagList, request: fetchTag } = useRequest({
+    url: api.getTagList(),
+  });
 
+  useEffect(() => {
+    fetchTag();
+  }, []);
   const columns = [
     {
       title: '名称',
       dataIndex: 'name',
       key: 'name',
-      width: 200,
     },
     {
       title: '缩写名',
-      dataIndex: 'shortName',
-      key: 'shortName',
-      width: 200,
+      dataIndex: 'cn_name',
+      key: 'cn_name',
     },
     {
       title: '文章数',
-      dataIndex: 'articleNum',
-      key: 'articleNum',
+      dataIndex: 'article_num',
+      key: 'article_num',
       width: 200,
     },
     {
@@ -100,14 +109,16 @@ export default function TabTable() {
     },
   ];
 
+  const dataSource = _.get(tagList, 'data.data')
+
   const getFormValues = (dataIndex, values) => {
-    dataSource[dataIndex] = values;
-    setDataSource([...dataSource]);
+    // `dataSource`[dataIndex] = values;
+    // setDataSource([...dataSource]);
   };
 
   const handleRemove = (value, index) => {
-    dataSource.splice(index, 1);
-    setDataSource([...dataSource]);
+    // dataSource.splice(index, 1);
+    // setDataSource([...dataSource]);
   };
 
   return (

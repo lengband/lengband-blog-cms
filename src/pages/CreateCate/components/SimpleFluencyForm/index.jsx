@@ -8,6 +8,8 @@ import {
 } from '@icedesign/form-binder';
 import cx from 'classnames';
 import styles from './index.module.scss';
+import { request } from '@/utils/request';
+import { api } from '@/utils/api';
 
 const { Row, Col } = Grid;
 const Toast = Message;
@@ -17,19 +19,23 @@ export default function SimpleFluencyForm() {
 
   const [formValue, setFormValue] = useState({
     name: '',
-    shortName: '',
+    cn_name: '',
   });
 
   const formChange = newValue => setFormValue(newValue);
 
   const handleSubmit = () => {
-    formRef.validateAll((errors, values) => {
+    formRef.validateAll(async (errors, values) => {
       if (errors) {
         console.log('errors', errors);
         return;
       }
-
-      console.log('values:', values);
+      const { data } = await request({
+        url: api.addType(),
+        method: 'post',
+        data: values,
+     });
+      console.log('data:', data);
       Toast.success('添加成功');
     });
   };
@@ -64,11 +70,11 @@ export default function SimpleFluencyForm() {
                 <span>缩略名称：</span>
               </Col>
               <Col xxs="16" s="10" l="6">
-                <FormBinder name="shortName" required message="必填项">
+                <FormBinder name="cn_name" required message="必填项">
                   <Input />
                 </FormBinder>
                 <div className={styles.formErrorWrapper}>
-                  <FormError name="shortName" />
+                  <FormError name="cn_name" />
                 </div>
               </Col>
             </Row>

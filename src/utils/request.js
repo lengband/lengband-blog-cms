@@ -69,6 +69,8 @@ export function useRequest(options) {
    * @param {object} config - axios config to shallow merged with options before making request
    */
   async function request(config) {
+    console.log(1);
+
     try {
       dispatch({
         type: 'init',

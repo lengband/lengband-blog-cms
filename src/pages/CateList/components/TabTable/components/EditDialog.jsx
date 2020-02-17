@@ -55,8 +55,8 @@ export default function EditDialog(props) {
             return (
               <React.Fragment>
                 <Field label="名称：" name="name" component={Input} rules={{ required: true, message: '必填选项' }} />
-                <Field label="缩写名：" name="shortName" component={Input} rules={{ required: true, message: '必填选项' }} />
-                <Field label="文章数：" name="articleNum" disabled component={Input} rules={{ required: true, message: '必填选项' }} />
+                <Field label="缩写名：" name="cn_name" component={Input} rules={{ required: true, message: '必填选项' }} />
+                <Field label="文章数：" name="article_num" disabled component={Input} rules={{ required: true, message: '必填选项' }} />
               </React.Fragment>
             );
           }}

@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+/* eslint-disable */
+import React, { useState, useEffect } from 'react';
+import marked from 'marked'
+import hljs from "highlight.js";
+import 'highlight.js/styles/monokai-sublime.css';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Select, Message } from '@alifd/next';
 import {
@@ -6,36 +10,87 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+import _ from 'lodash'
 
-import RichEditor from './RichEditor';
 import styles from './index.module.scss';
+import { useRequest, request } from '@/utils/request';
+import { api } from '@/utils/api';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
+const { TextArea } = Input
 
 export default function ContentEditor() {
   let formRef;
-
+  const renderer = new marked.Renderer()
+  marked.setOptions({
+    renderer,
+    gfm: true,
+    pedantic: false,
+    sanitize: false,
+    tables: true,
+    breaks: false,
+    smartLists: true,
+    smartypants: false,
+    highlight: function (code) {
+      console.log(code, 'code');
+      return hljs.highlightAuto(code).value;
+    }
+  });
   const [value, setValue] = useState({
-    title: '',
-    desc: '',
-    author: '',
-    body: null,
-    cats: [],
+    name: '',
+    instroduce: '',
+    content: '',
+    type: '',
+    tags: [],
+  });
+  const [markdownContent, setMarkdownContent] = useState('预览内容') // html内容
+
+  const { response: typeList, request: fetchType } = useRequest({
+    url: api.getTypeList(),
+  });
+
+  const {  response: tagList, request: fetchTag } = useRequest({
+    url: api.getTagList(),
   });
 
   const formChange = formValue => setValue(formValue);
 
+  const changeContent = (value) => {
+    setValue({
+      ...value,
+      content: value
+    })
+    const html = marked(value)
+    console.log({html, value}, 'html');
+
+    setMarkdownContent(html)
+  }
+
   const handleSubmit = () => {
-    formRef.validateAll((errors, values) => {
+    formRef.validateAll(async (errors, values) => {
       console.log('errors', errors, 'values', values);
       if (errors) {
         return false;
       }
-
+      const { data } = await request({
+        url: api.addArticle(),
+        method: 'post',
+        data: values,
+     });
+     // !!! 未完成
       Message.success('提交成功');
     });
   };
+
+  const editorChange = (...ret) => {
+    console.log(ret, 'rr');
+  }
+
+  useEffect(() => {
+    fetchType();
+    fetchTag()
+  }, []);
 
   return (
     <div className="content-editor">
@@ -47,52 +102,52 @@ export default function ContentEditor() {
         onChange={formChange}
       >
         <IceContainer>
-          <h2 className={styles.title}>添加文章</h2>
+          <h2 className={styles.name}>添加文章</h2>
           <Form labelAlign="top" className={styles.form}>
             <Row>
               <Col span="11">
                 <FormItem label="标题" required>
-                  <IceFormBinder name="title" required message="标题必填">
+                  <IceFormBinder name="name" required message="标题必填">
                     <Input placeholder="这里填写文章标题" />
                   </IceFormBinder>
-                  <IceFormError name="title" />
+                  <IceFormError name="name" />
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
-              <Col span="11">
-                <FormItem label="作者" required>
+              <Col span="11" offset="1">
+                <FormItem label="标签" required>
                   <IceFormBinder
-                    name="author"
-                    required
-                    message="作者信息必填"
-                  >
-                    <Input placeholder="填写作者名称" />
-                  </IceFormBinder>
-                  <IceFormError name="author" />
-                </FormItem>
-              </Col>
-              <Col span="11" offset="2">
-                <FormItem label="分类" required>
-                  <IceFormBinder
-                    name="cats"
+                    name="tags"
                     required
                     type="array"
-                    message="分类必填支持多个"
+                    message="标签必填支持多个"
                   >
                     <Select
                       style={{ width: '100%' }}
                       mode="multiple"
                       placeholder="请选择分类"
-                      dataSource={[
-                        { label: '分类1', value: 'cat1' },
-                        { label: '分类2', value: 'cat2' },
-                        { label: '分类3', value: 'cat3' },
-                      ]}
+                      dataSource={(_.get(tagList, 'data.data') || []).map(v => ({ value: v._id, label: v.cn_name }))}
+                    />
+                  </IceFormBinder>
+                  <IceFormError name="tags" />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span="11">
+                <FormItem label="分类" required>
+                  <IceFormBinder
+                    name="type"
+                    required
+                    message="分类必填支持多个"
+                  >
+                    <Select
+                      style={{ width: '100%' }}
+                      placeholder="请选择分类"
+                      dataSource={(_.get(typeList, 'data.data') || []).map(v => ({ value: v._id, label: v.cn_name }))}
                     />
                   </IceFormBinder>
                   <IceFormError
-                    name="cats"
+                    name="type"
                     render={(errors) => {
                       console.log('errors', errors);
                       return (
@@ -115,14 +170,26 @@ export default function ContentEditor() {
               </Col>
             </Row>
             <FormItem label="描述">
-              <IceFormBinder name="desc">
+              <IceFormBinder name="instroduce">
                 <Input.TextArea placeholder="这里填写正文描述" />
               </IceFormBinder>
             </FormItem>
             <FormItem label="正文" required>
-              <IceFormBinder name="body">
-                <RichEditor />
+              <IceFormBinder name="content">
+                <TextArea
+                value={value.content}
+                className="markdown-content"
+                rows={35}
+                onChange={changeContent}
+                onPressEnter={changeContent}
+                placeholder="文章内容"
+              />
               </IceFormBinder>
+            </FormItem>
+            <FormItem>
+              <div
+                className="show-html"
+                dangerouslySetInnerHTML={{ __html: markdownContent }} />
             </FormItem>
             <FormItem label=" ">
               <Button type="primary" onClick={handleSubmit}>

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Input, Button, Checkbox, Message } from '@alifd/next';
@@ -38,7 +37,7 @@ const UserLogin = props => {
         method: 'post',
         data: values,
      });
-     setToken(data.token)
+     setToken(data.token);
       Message.success('登录成功');
       props.history.push('/');
     });

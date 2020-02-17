@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import IceContainer from '@icedesign/container';
 import { Tab } from '@alifd/next';
-import axios from 'axios';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
+import { request } from '@/utils/request';
+import { api } from '@/utils/api';
 
 const TabPane = Tab.Item;
 
@@ -16,32 +17,58 @@ const tabs = [
 
 export default function TabTable() {
   const [dataSource, setDataSource] = useState({});
-  const [tabKey, setTabKey] = useState('all');
+  const [tabKey, setTabKey] = useState(tabs[0].key);
+
+  useEffect(() => {
+    const fetchData = async function () {
+      try {
+        const { data } = await request({
+          url: api.getArticleList(),
+        });
+        setDataSource({
+          [tabKey]: data.data,
+        });
+      } catch (error) {
+        throw error;
+      }
+    };
+    fetchData();
+  }, [tabKey]);
+
+  const getFormValues = (dataIndex, values) => {
+    dataSource[tabKey][dataIndex] = values;
+    setDataSource({ ...dataSource });
+  };
+
+  const handleRemove = (value, index) => {
+    dataSource[tabKey].splice(index, 1);
+    setDataSource({ ...dataSource });
+  };
+
+  const handleTabChange = (key) => {
+    setTabKey(key);
+  };
 
   const columns = [
     {
       title: '标题',
-      dataIndex: 'title',
-      key: 'title',
-      width: 200,
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: '作者',
-      dataIndex: 'author',
-      key: 'author',
-      width: 150,
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      key: 'status',
-      width: 150,
+      title: '类别',
+      dataIndex: 'type.cn_name',
+      key: 'type.cn_name',
     },
     {
       title: '发布时间',
-      dataIndex: 'date',
-      key: 'date',
-      width: 150,
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+    },
+    {
+      title: '浏览量',
+      dataIndex: 'view_count',
+      key: 'view_count',
     },
     {
       title: '操作',
@@ -63,31 +90,6 @@ export default function TabTable() {
       },
     },
   ];
-
-  useEffect(() => {
-    axios
-      .get('/mock/tab-table.json')
-      .then((response) => {
-        setDataSource(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  const getFormValues = (dataIndex, values) => {
-    dataSource[tabKey][dataIndex] = values;
-    setDataSource({ ...dataSource });
-  };
-
-  const handleRemove = (value, index) => {
-    dataSource[tabKey].splice(index, 1);
-    setDataSource({ ...dataSource });
-  };
-
-  const handleTabChange = (key) => {
-    setTabKey(key);
-  };
 
   return (
     <div className="tab-table">
