@@ -6,6 +6,7 @@
     "@alifd/next": "^1.x",
     "@antv/data-set": "^0.8.5",
     "@ice/form": "^0.1.5",
+    "@ice/store": "^0.4.7",
     "@icedesign/container": "^1.x",
     "@icedesign/form-binder": "^1.x",
     "@icedesign/foundation-symbol": "^1.x",

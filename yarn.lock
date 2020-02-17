@@ -1077,6 +1077,14 @@
     stylelint-order "^3.0.0"
     stylelint-scss "^3.8.0"
 
+"@ice/store@^0.4.7":
+  version "0.4.7"
+  resolved "https://registry.npmjs.org/@ice/store/-/store-0.4.7.tgz#dbbc748fd5d62da1d1bf3ae580aebfdfcf18fb68"
+  integrity sha512-lfOA1ki828a3Xv42z4y0eVAwxfsmx1vfSvcRZ2DnRluo5/4n+tRCLWvQXeD2xE0Mf2GGf1Xfw/imdk5Is/b45A==
+  dependencies:
+    is-promise "^2.1.0"
+    lodash.isfunction "^3.0.9"
+
 "@icedesign/container@^1.x":
   version "1.0.4"
   resolved "http://r.cnpmjs.org/@icedesign/container/download/@icedesign/container-1.0.4.tgz#e62d0d2a76b6e0216de84fedcc60bce2dbe8cb1a"
@@ -6994,6 +7002,11 @@ lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "http://r.cnpmjs.org/lodash.isequal/download/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
   integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
+
+lodash.isfunction@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.npmjs.org/lodash.isfunction/-/lodash.isfunction-3.0.9.tgz#06de25df4db327ac931981d1bdb067e5af68d051"
+  integrity sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==
 
 lodash.isinteger@^4.0.4:
   version "4.0.4"

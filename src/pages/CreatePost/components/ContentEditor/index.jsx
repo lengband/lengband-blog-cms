@@ -1,6 +1,5 @@
-/* eslint-disable */
 import React, { useState, useEffect } from 'react';
-import marked from 'marked'
+import marked from 'marked';
 import hljs from "highlight.js";
 import 'highlight.js/styles/monokai-sublime.css';
 import IceContainer from '@icedesign/container';
@@ -10,7 +9,7 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
-import _ from 'lodash'
+import _ from 'lodash';
 
 import styles from './index.module.scss';
 import { useRequest, request } from '@/utils/request';
@@ -18,11 +17,11 @@ import { api } from '@/utils/api';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
-const { TextArea } = Input
+const { TextArea } = Input;
 
 export default function ContentEditor() {
   let formRef;
-  const renderer = new marked.Renderer()
+  const renderer = new marked.Renderer();
   marked.setOptions({
     renderer,
     gfm: true,
@@ -32,10 +31,9 @@ export default function ContentEditor() {
     breaks: false,
     smartLists: true,
     smartypants: false,
-    highlight: function (code) {
-      console.log(code, 'code');
+    highlight (code) {
       return hljs.highlightAuto(code).value;
-    }
+    },
   });
   const [value, setValue] = useState({
     name: '',
@@ -44,7 +42,7 @@ export default function ContentEditor() {
     type: '',
     tags: [],
   });
-  const [markdownContent, setMarkdownContent] = useState('预览内容') // html内容
+  const [markdownContent, setMarkdownContent] = useState('预览内容'); // html内容
 
   const { response: typeList, request: fetchType } = useRequest({
     url: api.getTypeList(),
@@ -59,13 +57,11 @@ export default function ContentEditor() {
   const changeContent = (value) => {
     setValue({
       ...value,
-      content: value
-    })
-    const html = marked(value)
-    console.log({html, value}, 'html');
-
-    setMarkdownContent(html)
-  }
+      content: value,
+    });
+    const html = marked(value);
+    setMarkdownContent(html);
+  };
 
   const handleSubmit = () => {
     formRef.validateAll(async (errors, values) => {
@@ -73,23 +69,19 @@ export default function ContentEditor() {
       if (errors) {
         return false;
       }
-      const { data } = await request({
+      await request({
         url: api.addArticle(),
         method: 'post',
         data: values,
      });
-     // !!! 未完成
       Message.success('提交成功');
     });
   };
 
-  const editorChange = (...ret) => {
-    console.log(ret, 'rr');
-  }
-
   useEffect(() => {
     fetchType();
-    fetchTag()
+    fetchTag();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -177,13 +169,13 @@ export default function ContentEditor() {
             <FormItem label="正文" required>
               <IceFormBinder name="content">
                 <TextArea
-                value={value.content}
-                className="markdown-content"
-                rows={35}
-                onChange={changeContent}
-                onPressEnter={changeContent}
-                placeholder="文章内容"
-              />
+                  value={value.content}
+                  className="markdown-content"
+                  rows={35}
+                  onChange={changeContent}
+                  onPressEnter={changeContent}
+                  placeholder="文章内容"
+                />
               </IceFormBinder>
             </FormItem>
             <FormItem>

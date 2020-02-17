@@ -11,6 +11,7 @@ export const api = {
   delArticle: id => `delArticle/${id}`, // 删除文章
   getArticleById: id => `article/${id}`, // 根据ID获得文章详情
   getUserList: () => 'user',
+  getUserInfo: id => `user/${id}`,
   getTagList: () => 'tag',
   addTag: () => 'tag/create',
 };

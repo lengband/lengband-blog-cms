@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Balloon, Icon, Nav } from '@alifd/next';
 import IceImg from '@icedesign/img';
@@ -7,9 +8,12 @@ import { Link } from 'react-router-dom';
 import { headerMenuConfig } from '@/menuConfig';
 import Logo from '../Logo';
 import styles from './index.module.scss';
+import stores from '@/stores'
 
 export default function Header(props) {
   const { isMobile, className, style } = props;
+  const user = stores.useStore('user');
+  const { userInfo } = user;
   return (
     <Layout.Header
       className={`${styles.iceDesignLayoutHeader} ${className}`}
@@ -66,9 +70,9 @@ export default function Header(props) {
                 className={styles.userAvatar}
               />
               <div className={styles.userProfile}>
-                <span className={styles.userName}>淘小宝</span>
-                <br />
-                <span className={styles.userDepartment}>技术部</span>
+          <span className={styles.userName}>{ userInfo.name }</span>
+                {/* <br />
+                <span className={styles.userDepartment}>技术部</span> */}
               </div>
               <Icon
                 type="arrow-down"
