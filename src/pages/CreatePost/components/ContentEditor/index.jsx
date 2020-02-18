@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter, Link } from 'react-router-dom';
 import marked from 'marked';
 import hljs from "highlight.js";
 import 'highlight.js/styles/monokai-sublime.css';
@@ -18,9 +19,8 @@ import { api } from '@/utils/api';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
-const { TextArea } = Input;
 
-export default function ContentEditor() {
+function ContentEditor(props) {
   let formRef;
   const renderer = new marked.Renderer();
   marked.setOptions({
@@ -55,6 +55,25 @@ export default function ContentEditor() {
 
   const formChange = formValue => setValue(formValue);
 
+  const fetchArticle = async id => {
+    const { url, method } = api.getArticleById(id);
+    try {
+      const { data } = await request({
+        url,
+        method,
+     });
+      setValue({
+        name: data.name,
+        instroduce: data.instroduce,
+        content: data.content,
+        type: data.type._id,
+        tags: data.tags,
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const changeContent = (value) => {
     setValue({
       ...value,
@@ -66,7 +85,6 @@ export default function ContentEditor() {
 
   const handleSubmit = () => {
     formRef.validateAll(async (errors, values) => {
-      console.log('errors', errors, 'values', values);
       if (errors) {
         return false;
       }
@@ -83,6 +101,9 @@ export default function ContentEditor() {
   useEffect(() => {
     fetchType();
     fetchTag();
+    if (props.match.params.id) {
+      fetchArticle(props.match.params.id);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -152,7 +173,7 @@ export default function ContentEditor() {
                           <span className={styles.mr}>
                             不知道选择什么分类？请
                             {' '}
-                            <a href="#">点击这里</a>
+                            <Link to="/cate/list">点击这里</Link>
                             {' '}
                             查看
                           </span>
@@ -169,8 +190,8 @@ export default function ContentEditor() {
               </IceFormBinder>
             </FormItem>
             <FormItem label="正文" required>
-              <IceFormBinder name="content">
-                <TextArea
+              <IceFormBinder name="content" required message="请填写文章内容">
+                <Input.TextArea
                   value={value.content}
                   className="markdown-content"
                   rows={35}
@@ -178,6 +199,7 @@ export default function ContentEditor() {
                   placeholder="文章内容"
                 />
               </IceFormBinder>
+              <IceFormError name="content" />
             </FormItem>
             <FormItem>
               <Button type="primary" onClick={handleSubmit}>
@@ -202,3 +224,5 @@ export default function ContentEditor() {
     </div>
   );
 }
+
+export default withRouter(ContentEditor);

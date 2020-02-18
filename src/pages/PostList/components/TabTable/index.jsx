@@ -1,6 +1,8 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import IceContainer from '@icedesign/container';
-import { Tab } from '@alifd/next';
+import { Tab, Message, Button } from '@alifd/next';
 import IceLabel from '@icedesign/label';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
@@ -16,39 +18,65 @@ const tabs = [
   { tab: '待发布', key: 'review' },
 ];
 
-export default function TabTable() {
+function TabTable(props) {
   const [dataSource, setDataSource] = useState({});
   const [tabKey, setTabKey] = useState(tabs[0].key);
 
-  useEffect(() => {
-    const fetchData = async function () {
-      try {
-        const { data } = await request({
-          url: api.getArticleList().url,
-        });
-        setDataSource({
-          [tabKey]: data.data,
-        });
-      } catch (error) {
-        throw error;
-      }
-    };
-    fetchData();
-  }, [tabKey]);
-
-  const getFormValues = (dataIndex, values) => {
-    dataSource[tabKey][dataIndex] = values;
-    setDataSource({ ...dataSource });
+  const fetchArticle = async function () {
+    try {
+      const { data } = await request({
+        url: api.getArticleList().url,
+      });
+      setDataSource({
+        [tabKey]: data.data,
+      });
+    } catch (error) {
+      throw error;
+    }
   };
 
-  const handleRemove = (value, index) => {
-    dataSource[tabKey].splice(index, 1);
-    setDataSource({ ...dataSource });
+  useEffect(() => {
+    fetchArticle();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabKey]);
+
+  const handleRemove = async (value, index, record) => {
+    try {
+      const { url, method } = api.delArticle(record._id);
+      await request({
+        url,
+        method,
+      });
+      Message.success('操作成功');
+      fetchArticle();
+    } catch (error) {
+      Message.error(`操作失败：${error}`);
+    }
+  };
+
+  const handleUpdate = async (data, id) => {
+    try {
+      const { url, method } = api.updateArticle(id);
+      await request({
+        url,
+        method,
+        data,
+      });
+      Message.success('操作成功');
+      fetchArticle();
+    } catch (error) {
+      Message.error(`操作失败：${error}`);
+    }
   };
 
   const handleTabChange = (key) => {
     setTabKey(key);
   };
+
+  const pushUpdate = id => {
+    const { history } = props;
+    history.push(`/post/update/${id}`);
+  }
 
   const columns = [
     {
@@ -64,13 +92,13 @@ export default function TabTable() {
     {
       title: '标签',
       dataIndex: 'tags',
+      key: 'tags',
       render: (value, index, record) => {
-        console.log({ value, index, record }, 'value, index, record');
         return (
           <span>
             {
               record.tags.map(tag => (
-                <IceLabel inverse={false} status="primary">{ tag.cn_name }</IceLabel>
+                <IceLabel key={tag._id} inverse={false} status="primary">{ tag.cn_name }</IceLabel>
               ))
             }
           </span>
@@ -94,11 +122,14 @@ export default function TabTable() {
       render: (value, index, record) => {
         return (
           <span>
-            <EditDialog
+            {/* <EditDialog
               index={index}
               record={record}
-              getFormValues={getFormValues}
-            />
+              handleUpdate={formData => handleUpdate(formData, record._id)}
+            /> */}
+            <Button type="primary" onClick={() => pushUpdate(record._id)}>
+              编辑
+            </Button>
             <DeleteBalloon
               handleRemove={() => handleRemove(value, index, record)}
             />
@@ -128,3 +159,5 @@ export default function TabTable() {
     </div>
   );
 }
+
+export default withRouter(TabTable)

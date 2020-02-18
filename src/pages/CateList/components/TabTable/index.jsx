@@ -2,9 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import IceContainer from '@icedesign/container';
-import {
-  Message,
-} from '@alifd/next';
+import { Message } from '@alifd/next';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
@@ -122,7 +120,6 @@ export default function TabTable() {
   };
 
   const handleUpdate = async (data, id) => {
-    console.log(data, 'data');
     try {
       const { url, method } = api.updateType(id)
       await request({

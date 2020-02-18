@@ -4,5 +4,6 @@ module.exports = deepmerge(eslint, {
   rules: {
     "global-require": 0,
     "no-shadow": "off",
+    "no-underscore-dangle": "off",
   },
 });

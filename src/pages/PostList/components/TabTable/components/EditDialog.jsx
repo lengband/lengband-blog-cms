@@ -5,21 +5,18 @@ import styles from './index.module.scss';
 
 export default function EditDialog(props) {
   const [visible, setVisible] = useState(false);
-  const [dataIndex, setDataIndex] = useState(null);
   const [initialValues, setInitialValues] = useState({});
 
   let handleSubmit = null;
 
   const onSubmit = (values) => {
-    console.log(values, dataIndex);
     setVisible(false);
-    props.getFormValues(dataIndex, values);
+    props.handleUpdate(values);
   };
 
   const onOpen = (index, record) => {
     setInitialValues(record);
     setVisible(true);
-    setDataIndex(index);
   };
 
   const onClose = () => {
@@ -53,10 +50,7 @@ export default function EditDialog(props) {
             handleSubmit = formCore.submit.bind(formCore);
             return (
               <React.Fragment>
-                <Field label="标题：" name="title" component={Input} rules={{ required: true, message: '必填选项' }} />
-                <Field label="作者：" name="author" component={Input} rules={{ required: true, message: '必填选项' }} />
-                <Field label="状态：" name="status" component={Input} rules={{ required: true, message: '必填选项' }} />
-                <Field label="发布时间：" name="date" component={Input} rules={{ required: true, message: '必填选项' }} />
+                <Field label="标题：" name="name" component={Input} rules={{ required: true, message: '必填选项' }} />
               </React.Fragment>
             );
           }}

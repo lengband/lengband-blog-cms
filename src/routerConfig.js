@@ -92,6 +92,10 @@ const routerConfig = [
         component: CreatePost,
       },
       {
+        path: '/post/update/:id',
+        component: CreatePost,
+      },
+      {
         path: '/',
         redirect: '/dashboard/monitor',
       },
