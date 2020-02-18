@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import IceContainer from '@icedesign/container';
 import { Tab } from '@alifd/next';
+import IceLabel from '@icedesign/label';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
@@ -59,6 +60,22 @@ export default function TabTable() {
       title: '类别',
       dataIndex: 'type.cn_name',
       key: 'type.cn_name',
+    },
+    {
+      title: '标签',
+      dataIndex: 'tags',
+      render: (value, index, record) => {
+        console.log({ value, index, record }, 'value, index, record');
+        return (
+          <span>
+            {
+              record.tags.map(tag => (
+                <IceLabel inverse={false} status="primary">{ tag.cn_name }</IceLabel>
+              ))
+            }
+          </span>
+        );
+      },
     },
     {
       title: '发布时间',

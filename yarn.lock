@@ -1118,6 +1118,14 @@
     classnames "^2.2.5"
     prop-types "^15.5.10"
 
+"@icedesign/label@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/@icedesign/label/-/label-1.0.4.tgz#a4d8dde521cf6604f42e4dac3525207651c8c83f"
+  integrity sha512-nb04mQf8ErGepdOCTX29ULHT30tlN/hu6z06zSzohr1nwHBc0soZ8jAm2iLCP+C6onkKdkrZ5S9FRbKv2nPvpg==
+  dependencies:
+    "@alifd/next" "^1.x"
+    prop-types "^15.6.0"
+
 "@icedesign/layout@^1.x":
   version "1.0.8"
   resolved "http://r.cnpmjs.org/@icedesign/layout/download/@icedesign/layout-1.0.8.tgz#cdc0fd5fc0546a8a78bcbecdef9c4b3028c7cb3d"
@@ -1126,6 +1134,15 @@
     "@alifd/next" "^1.11.7"
     classnames "^2.2.5"
     prop-types "^15.5.10"
+
+"@icedesign/panel@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/@icedesign/panel/-/panel-1.0.4.tgz#a65eb7b01cce0f564bd4a2197e08e40fb4d64d10"
+  integrity sha512-1YW7Fbm8vVyC7BG2F81xw+BhkCvdvT3zAYkksNw14/YYH294TT8xH89k7Yj064kgwb+O2+89lPdwMEdCDMas+Q==
+  dependencies:
+    "@alifd/next" "^1.x"
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
 
 "@icedesign/skin@^0.1.13":
   version "0.1.14"

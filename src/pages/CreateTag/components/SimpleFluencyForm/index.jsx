@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import IceContainer from '@icedesign/container';
-import { Grid, Input, Button, Message } from '@alifd/next';
+import { Grid, Input, Button, Message, Select } from '@alifd/next';
 import {
   FormBinderWrapper,
   FormBinder,
   FormError,
 } from '@icedesign/form-binder';
+import IceLabel from '@icedesign/label';
 
 import styles from './index.module.scss';
 import { request } from '@/utils/request';
@@ -20,7 +21,26 @@ export default function SimpleFluencyForm() {
   const [formValue, setFormValue] = useState({
     name: '',
     cn_name: '',
+    tag_type: '',
   });
+
+  const tagTypeOpts = [
+    {value: 'default', label: 'default', title: 'grey'},
+    {value: 'primary', label: 'primary', title: 'blue'},
+    {value: 'success', label: 'success', title: 'green'},
+    {value: 'warning', label: 'warning', title: 'yellow'},
+    {value: 'info', label: 'info', title: 'lightblue'},
+    {value: 'danger', label: 'danger', title: 'red'},
+  ];
+
+  const itemRender = item => {
+    return (
+      <span>
+        <IceLabel inverse={false} status={item.value}>{item.label}</IceLabel>
+      </span>
+    );
+  };
+
 
   const formChange = newValue => setFormValue(newValue);
 
@@ -58,7 +78,7 @@ export default function SimpleFluencyForm() {
               </Col>
               <Col xxs="16" s="10" l="6">
                 <FormBinder name="name" required message="必填项">
-                  <Input />
+                  <Input placeholder="请输入标签名称" />
                 </FormBinder>
                 <div className={styles.formErrorWrapper}>
                   <FormError name="name" />
@@ -71,10 +91,27 @@ export default function SimpleFluencyForm() {
               </Col>
               <Col xxs="16" s="10" l="6">
                 <FormBinder name="cn_name" required message="必填项">
-                  <Input />
+                  <Input placeholder="请输入缩略名称" />
                 </FormBinder>
                 <div className={styles.formErrorWrapper}>
                   <FormError name="cn_name" />
+                </div>
+              </Col>
+            </Row>
+            <Row className={styles.formRow}>
+              <Col xxs="6" s="4" l="3" className={styles.formLabel}>
+                <span>标签类型：</span>
+              </Col>
+              <Col xxs="16" s="10" l="6">
+                <FormBinder name="tag_type" required message="必填项">
+                  <Select
+                    dataSource={tagTypeOpts}
+                    itemRender={itemRender}
+                    valueRender={itemRender}
+                    placeholder="请选择标签类型" />
+                </FormBinder>
+                <div className={styles.formErrorWrapper}>
+                  <FormError name="tag_type" />
                 </div>
               </Col>
             </Row>

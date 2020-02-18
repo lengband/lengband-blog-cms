@@ -9,6 +9,7 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+import IcePanel from '@icedesign/panel';
 import _ from 'lodash';
 
 import styles from './index.module.scss';
@@ -178,14 +179,21 @@ export default function ContentEditor() {
               </IceFormBinder>
             </FormItem>
             <FormItem>
-              <div
-                className="show-html"
-                dangerouslySetInnerHTML={{ __html: markdownContent }} />
-            </FormItem>
-            <FormItem label=" ">
               <Button type="primary" onClick={handleSubmit}>
                 发布文章
               </Button>
+            </FormItem>
+            <FormItem className="pt-3">
+              <IcePanel status="info" style={{marginBottom: '10px'}}>
+                <IcePanel.Header>
+                  预览
+                </IcePanel.Header>
+                <IcePanel.Body>
+                  <div
+                    className="show-html"
+                    dangerouslySetInnerHTML={{ __html: markdownContent }} />
+                </IcePanel.Body>
+              </IcePanel>
             </FormItem>
           </Form>
         </IceContainer>
