@@ -36,17 +36,16 @@ const dataSource = [
 export default function StatisticalCard() {
   const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    enquireScreenRegister();
-  }, []);
-
   const enquireScreenRegister = () => {
     const mediaCondition = 'only screen and (max-width: 720px)';
-
     enquireScreen((mobile) => {
       setIsMobile(mobile);
     }, mediaCondition);
   };
+
+  useEffect(() => {
+    enquireScreenRegister();
+  }, []);
 
   const renderItem = () => {
     const itemStyle = isMobile ? { justifyContent: 'left' } : {};

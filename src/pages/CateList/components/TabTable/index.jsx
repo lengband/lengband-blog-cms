@@ -59,7 +59,7 @@ export default function TabTable() {
 
   useEffect(() => {
     fetchType();
-  }, [fetchType]);
+  }, []);
 
   const handleRemove = async (value, index, record) => {
     try {

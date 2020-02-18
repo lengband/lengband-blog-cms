@@ -17,7 +17,7 @@ export default function TabTable() {
 
   useEffect(() => {
     fetchTag();
-  }, [fetchTag]);
+  }, []);
 
   const handleRemove = async (value, index, record) => {
     try {
@@ -65,6 +65,7 @@ export default function TabTable() {
       key: 'tag_type',
       render: (value, index, record) => {
         const tagItem = tagTypeOpts.find(val => val.value === record.tag_type);
+        if (!tagItem) return '-';
         return (
           <span>
             <IceLabel inverse={false} status={tagItem.value}>{tagItem.label}</IceLabel>
