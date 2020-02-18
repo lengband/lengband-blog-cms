@@ -2,10 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import IceContainer from '@icedesign/container';
+import {
+  Message,
+} from '@alifd/next';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
-import { useRequest } from '@/utils/request';
+import { useRequest, request } from '@/utils/request';
 import { api } from '@/utils/api';
 import _ from 'lodash'
 
@@ -91,7 +94,7 @@ export default function TabTable() {
             <EditDialog
               index={index}
               record={record}
-              getFormValues={getFormValues}
+              handleUpdate={(formData) => handleUpdate(formData, record._id)}
             />
             <DeleteBalloon
               handleRemove={() => handleRemove(value, index, record)}
@@ -104,15 +107,35 @@ export default function TabTable() {
 
   const dataSource = _.get(typeList, 'data.data')
 
-  function getFormValues(dataIndex, values) {
-    // dataSource[dataIndex] = values;
-    // setDataSource([...dataSource]);
-  }
+  const handleRemove = async (value, index, record) => {
+    try {
+      const { url, method } = api.delType(record._id)
+      await request({
+        url,
+        method,
+      })
+      Message.success('操作成功')
+      fetchType()
+    } catch (error) {
+      Message.error(`操作失败：${error}`)
+    }
+  };
 
-  function handleRemove(value, index) {
-    // dataSource.splice(index, 1);
-    // setDataSource([...dataSource]);
-  }
+  const handleUpdate = async (data, id) => {
+    console.log(data, 'data');
+    try {
+      const { url, method } = api.updateType(id)
+      await request({
+        url,
+        method,
+        data,
+      })
+      Message.success('操作成功')
+      fetchType()
+    } catch (error) {
+      Message.error(`操作失败：${error}`)
+    }
+  };
 
   return (
     <div className="tab-table">
