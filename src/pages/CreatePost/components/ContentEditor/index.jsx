@@ -173,7 +173,6 @@ export default function ContentEditor() {
                   className="markdown-content"
                   rows={35}
                   onChange={changeContent}
-                  onPressEnter={changeContent}
                   placeholder="文章内容"
                 />
               </IceFormBinder>
