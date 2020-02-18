@@ -5,11 +5,8 @@ import { decodeToken } from '@/utils/auth';
 export default {
   userInfo: decodeToken(),
   async fetchUserInfo(id) {
-    const userMsg = decodeToken();
-    console.log(userMsg, 'userMsg');
     const { data } = await request({
-      url: api.getUserInfo(id),
-      method: 'post',
+      url: api.getUserInfo(id).url,
     });
     return data;
   },

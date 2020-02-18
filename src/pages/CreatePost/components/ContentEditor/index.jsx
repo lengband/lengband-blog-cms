@@ -46,11 +46,11 @@ export default function ContentEditor() {
   const [markdownContent, setMarkdownContent] = useState('预览内容'); // html内容
 
   const { response: typeList, request: fetchType } = useRequest({
-    url: api.getTypeList(),
+    url: api.getTypeList().url,
   });
 
   const {  response: tagList, request: fetchTag } = useRequest({
-    url: api.getTagList(),
+    url: api.getTagList().url,
   });
 
   const formChange = formValue => setValue(formValue);
@@ -70,9 +70,10 @@ export default function ContentEditor() {
       if (errors) {
         return false;
       }
+      const { url, method } = api.addArticle();
       await request({
-        url: api.addArticle(),
-        method: 'post',
+        url,
+        method,
         data: values,
      });
       Message.success('提交成功');

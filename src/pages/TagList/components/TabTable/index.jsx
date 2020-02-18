@@ -71,7 +71,7 @@ const MOCK_DATA = [
 export default function TabTable() {
   // const [dataSource, setDataSource] = useState(MOCK_DATA);
   const { response: tagList, request: fetchTag } = useRequest({
-    url: api.getTagList(),
+    url: api.getTagList().url,
   });
 
   useEffect(() => {

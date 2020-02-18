@@ -43,9 +43,10 @@ export default function SimpleFluencyForm() {
         console.log('errors', errors);
         return;
       }
+      const { url, method } = api.addTag();
       const { data } = await request({
-        url: api.addTag(),
-        method: 'post',
+        url,
+        method,
         data: values,
      });
       console.log('data:', data);

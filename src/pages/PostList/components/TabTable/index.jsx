@@ -24,7 +24,7 @@ export default function TabTable() {
     const fetchData = async function () {
       try {
         const { data } = await request({
-          url: api.getArticleList(),
+          url: api.getArticleList().url,
         });
         setDataSource({
           [tabKey]: data.data,

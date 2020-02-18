@@ -30,9 +30,10 @@ export default function SimpleFluencyForm() {
         console.log('errors', errors);
         return;
       }
+      const { url, method } = api.addType();
       const { data } = await request({
-        url: api.addType(),
-        method: 'post',
+        url,
+        method,
         data: values,
      });
       console.log('data:', data);
