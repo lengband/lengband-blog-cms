@@ -1,11 +1,10 @@
-/* eslint-disable */
+
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import IceContainer from '@icedesign/container';
 import { Tab, Message, Button } from '@alifd/next';
 import IceLabel from '@icedesign/label';
 import CustomTable from './components/CustomTable';
-import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
@@ -54,21 +53,6 @@ function TabTable(props) {
     }
   };
 
-  const handleUpdate = async (data, id) => {
-    try {
-      const { url, method } = api.updateArticle(id);
-      await request({
-        url,
-        method,
-        data,
-      });
-      Message.success('操作成功');
-      fetchArticle();
-    } catch (error) {
-      Message.error(`操作失败：${error}`);
-    }
-  };
-
   const handleTabChange = (key) => {
     setTabKey(key);
   };
@@ -76,7 +60,7 @@ function TabTable(props) {
   const pushUpdate = id => {
     const { history } = props;
     history.push(`/post/update/${id}`);
-  }
+  };
 
   const columns = [
     {
@@ -122,11 +106,6 @@ function TabTable(props) {
       render: (value, index, record) => {
         return (
           <span>
-            {/* <EditDialog
-              index={index}
-              record={record}
-              handleUpdate={formData => handleUpdate(formData, record._id)}
-            /> */}
             <Button type="primary" onClick={() => pushUpdate(record._id)}>
               编辑
             </Button>
@@ -160,4 +139,4 @@ function TabTable(props) {
   );
 }
 
-export default withRouter(TabTable)
+export default withRouter(TabTable);

@@ -1,57 +1,55 @@
-/* eslint-disable */
-
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import IceContainer from '@icedesign/container';
 import { Message } from '@alifd/next';
+import _ from 'lodash';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
 import { useRequest, request } from '@/utils/request';
 import { api } from '@/utils/api';
-import _ from 'lodash'
 
-const MOCK_DATA = [
-  {
-    name: '前端',
-    cn_name: 'frontEnd',
-    article_num: '2',
-  },
-  {
-    name: '后端',
-    cn_name: 'backEnd',
-    article_num: '3',
-  },
-  {
-    name: '开发工具',
-    cn_name: 'tool',
-    article_num: '10',
-  },
-  {
-    name: '数据库',
-    cn_name: 'database',
-    article_num: '26',
-  },
-  {
-    name: '系统',
-    cn_name: 'system',
-    article_num: '18',
-  },
-  {
-    name: '服务器',
-    cn_name: 'server',
-    article_num: '6',
-  },
-  {
-    name: '框架',
-    cn_name: 'framework',
-    article_num: '39',
-  },
-  {
-    name: '其他',
-    cn_name: 'other',
-    article_num: '52',
-  },
-];
+// const MOCK_DATA = [
+//   {
+//     name: '前端',
+//     cn_name: 'frontEnd',
+//     article_num: '2',
+//   },
+//   {
+//     name: '后端',
+//     cn_name: 'backEnd',
+//     article_num: '3',
+//   },
+//   {
+//     name: '开发工具',
+//     cn_name: 'tool',
+//     article_num: '10',
+//   },
+//   {
+//     name: '数据库',
+//     cn_name: 'database',
+//     article_num: '26',
+//   },
+//   {
+//     name: '系统',
+//     cn_name: 'system',
+//     article_num: '18',
+//   },
+//   {
+//     name: '服务器',
+//     cn_name: 'server',
+//     article_num: '6',
+//   },
+//   {
+//     name: '框架',
+//     cn_name: 'framework',
+//     article_num: '39',
+//   },
+//   {
+//     name: '其他',
+//     cn_name: 'other',
+//     article_num: '52',
+//   },
+// ];
 
 export default function TabTable() {
   // const [dataSource, setDataSource] = useState(MOCK_DATA);
@@ -61,7 +59,36 @@ export default function TabTable() {
 
   useEffect(() => {
     fetchType();
-  }, []);
+  }, [fetchType]);
+
+  const handleRemove = async (value, index, record) => {
+    try {
+      const { url, method } = api.delType(record._id);
+      await request({
+        url,
+        method,
+      });
+      Message.success('操作成功');
+      fetchType();
+    } catch (error) {
+      Message.error(`操作失败：${error}`);
+    }
+  };
+
+  const handleUpdate = async (data, id) => {
+    try {
+      const { url, method } = api.updateType(id);
+      await request({
+        url,
+        method,
+        data,
+      });
+      Message.success('操作成功');
+      fetchType();
+    } catch (error) {
+      Message.error(`操作失败：${error}`);
+    }
+  };
 
   const columns = [
     {
@@ -103,36 +130,7 @@ export default function TabTable() {
     },
   ];
 
-  const dataSource = _.get(typeList, 'data.data')
-
-  const handleRemove = async (value, index, record) => {
-    try {
-      const { url, method } = api.delType(record._id)
-      await request({
-        url,
-        method,
-      })
-      Message.success('操作成功')
-      fetchType()
-    } catch (error) {
-      Message.error(`操作失败：${error}`)
-    }
-  };
-
-  const handleUpdate = async (data, id) => {
-    try {
-      const { url, method } = api.updateType(id)
-      await request({
-        url,
-        method,
-        data,
-      })
-      Message.success('操作成功')
-      fetchType()
-    } catch (error) {
-      Message.error(`操作失败：${error}`)
-    }
-  };
+  const dataSource = _.get(typeList, 'data.data');
 
   return (
     <div className="tab-table">

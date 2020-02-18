@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { Balloon, Icon, Nav } from '@alifd/next';
 import IceImg from '@icedesign/img';
@@ -8,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { headerMenuConfig } from '@/menuConfig';
 import Logo from '../Logo';
 import styles from './index.module.scss';
-import stores from '@/stores'
+import stores from '@/stores';
 
 export default function Header(props) {
   const { isMobile, className, style } = props;
