@@ -11,6 +11,7 @@ import IceLabel from '@icedesign/label';
 import styles from './index.module.scss';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
+import { tagTypeOpts } from '@/constants';
 
 const { Row, Col } = Grid;
 const Toast = Message;
@@ -24,16 +25,8 @@ export default function SimpleFluencyForm() {
     tag_type: '',
   });
 
-  const tagTypeOpts = [
-    {value: 'default', label: 'default', title: 'grey'},
-    {value: 'primary', label: 'primary', title: 'blue'},
-    {value: 'success', label: 'success', title: 'green'},
-    {value: 'warning', label: 'warning', title: 'yellow'},
-    {value: 'info', label: 'info', title: 'lightblue'},
-    {value: 'danger', label: 'danger', title: 'red'},
-  ];
-
   const itemRender = item => {
+    if (!item.value) return ''; // 兼容 valueRender
     return (
       <span>
         <IceLabel inverse={false} status={item.value}>{item.label}</IceLabel>

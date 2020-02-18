@@ -11,9 +11,7 @@ export default function EditDialog(props) {
   let handleSubmit = null;
 
   const onSubmit = (values) => {
-    console.log(values, dataIndex);
-    setVisible(false);
-    props.getFormValues(dataIndex, values);
+    props.handleUpdate(values);
   };
 
   const onOpen = (index, record) => {

@@ -5,8 +5,14 @@ import IceContainer from '@icedesign/container';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
-import { useRequest } from '@/utils/request';
+import { useRequest, request } from '@/utils/request';
+import {
+  Message,
+} from '@alifd/next';
+import IceLabel from '@icedesign/label';
+
 import { api } from '@/utils/api';
+import { tagTypeOpts } from '@/constants';
 import _ from 'lodash'
 
 const MOCK_DATA = [
@@ -83,6 +89,19 @@ export default function TabTable() {
       key: 'cn_name',
     },
     {
+      title: '标签类型',
+      dataIndex: 'tag_type',
+      key: 'tag_type',
+      render: (value, index, record) => {
+        const tagItem = tagTypeOpts.find(val => val.value === record.tag_type)
+        return (
+          <span>
+            <IceLabel inverse={false} status={tagItem.value}>{tagItem.label}</IceLabel>
+          </span>
+        )
+      }
+    },
+    {
       title: '文章数',
       dataIndex: 'article_num',
       key: 'article_num',
@@ -98,7 +117,7 @@ export default function TabTable() {
             <EditDialog
               index={index}
               record={record}
-              getFormValues={getFormValues}
+              handleUpdate={(formData) => handleUpdate(formData, record._id)}
             />
             <DeleteBalloon
               handleRemove={() => handleRemove(value, index, record)}
@@ -111,14 +130,33 @@ export default function TabTable() {
 
   const dataSource = _.get(tagList, 'data.data')
 
-  const getFormValues = (dataIndex, values) => {
-    // `dataSource`[dataIndex] = values;
-    // setDataSource([...dataSource]);
+  const handleRemove = async (value, index, record) => {
+    try {
+      const { url, method } = api.delTag(record._id)
+      await request({
+        url,
+        method,
+      })
+      Message.success('操作成功')
+      fetchTag()
+    } catch (error) {
+      Message.error(`操作失败：${error}`)
+    }
   };
 
-  const handleRemove = (value, index) => {
-    // dataSource.splice(index, 1);
-    // setDataSource([...dataSource]);
+  const handleUpdate = async (data, id) => {
+    try {
+      const { url, method } = api.updateTag(id)
+      await request({
+        url,
+        method,
+        data,
+      })
+      Message.success('操作成功')
+      fetchTag()
+    } catch (error) {
+      Message.error(`操作失败：${error}`)
+    }
   };
 
   return (
