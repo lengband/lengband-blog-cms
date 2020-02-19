@@ -1,32 +1,59 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
+import { Message } from '@alifd/next';
 import IceContainer from '@icedesign/container';
-import axios from 'axios';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
+import { useRequest, request } from '@/utils/request';
+import { api } from '@/utils/api';
 
 export default function TabTable() {
-  const [dataSource, setDataSource] = useState({});
+  const { response: userList, request: fetchUser } = useRequest({
+    url: api.getUserList().url,
+  });
 
-  const getFormValues = (dataIndex, values) => {
-    console.log({ dataIndex, values }, 'getFormValues');
+  const handleRemove = async (value, index, record) => {
+    try {
+      const { url, method } = api.delUser(record._id);
+      await request({
+        url,
+        method,
+      });
+      Message.success('操作成功');
+      fetchUser();
+    } catch (error) {
+      Message.error(`操作失败：${error}`);
+    }
   };
 
-  const handleRemove = (value, index, record) => {
-    console.log({ value, index, record }, 'handleRemove');
+  const handleUpdate = async (data, id) => {
+    try {
+      const { url, method } = api.updateUser(id);
+      await request({
+        url,
+        method,
+        data,
+      });
+      Message.success('操作成功');
+      fetchUser();
+    } catch (error) {
+      Message.error(`操作失败：${error}`);
+    }
   };
 
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-      width: 50,
+      title: '用户名',
+      dataIndex: 'name',
+      key: 'name',
+      width: 100,
     },
     {
-      title: '用户名',
-      dataIndex: 'username',
-      key: 'username',
+      title: '角色',
+      dataIndex: 'role',
+      key: 'role',
       width: 100,
     },
     {
@@ -36,34 +63,30 @@ export default function TabTable() {
       width: 150,
     },
     {
-      title: '用户组',
-      dataIndex: 'group',
-      key: 'group',
-      width: 120,
-    },
-    {
       title: '文章数',
-      dataIndex: 'articleNum',
-      key: 'articleNum',
-      width: 80,
+      dataIndex: 'article_num',
+      key: 'article_num',
     },
     {
       title: '评论数',
-      dataIndex: 'commentNum',
-      key: 'commentNum',
-      width: 80,
+      dataIndex: 'comment_num',
+      key: 'comment_num',
     },
     {
       title: '注册时间',
-      dataIndex: 'regTime',
-      key: 'regTime',
-      width: 150,
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (value, index, record) => {
+        return moment(record.createdAt).format()
+      }
     },
     {
       title: '最后登录时间',
-      dataIndex: 'LastLoginTime',
-      key: 'LastLoginTime',
-      width: 150,
+      dataIndex: 'last_login_time',
+      key: 'last_login_time',
+      render: (value, index, record) => {
+        return moment(record.last_login_time).format()
+      }
     },
     {
       title: '操作',
@@ -75,7 +98,7 @@ export default function TabTable() {
             <EditDialog
               index={index}
               record={record}
-              getFormValues={getFormValues}
+              handleUpdate={(formData) => handleUpdate(formData, record._id)}
             />
             <DeleteBalloon
               handleRemove={() => handleRemove(value, index, record)}
@@ -87,15 +110,10 @@ export default function TabTable() {
   ];
 
   useEffect(() => {
-    axios
-      .get('/mock/user-list.json')
-      .then((response) => {
-        setDataSource(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    fetchUser()
   }, []);
+
+  const dataSource = _.get(userList, 'data.data');
 
   return (
     <div className="tab-table">

@@ -6,19 +6,20 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+import { request } from '@/utils/request';
 import styles from './index.module.scss';
+import { api } from '@/utils/api';
 
 const { Row, Col } = Grid;
 const Toast = Message;
 
 export default function UserForm() {
   const [value, setValue] = useState({
-    username: '',
-    displayName: '',
+    name: '',
+    cn_name: '',
     email: '',
-    userGroup: null,
-    userState: null,
-    passwd: '',
+    role: null,
+    password: '',
     rePasswd: '',
   });
 
@@ -37,8 +38,7 @@ export default function UserForm() {
   };
 
   const checkPasswd2 = (rule, values, callback, stateValues) => {
-    console.log('stateValues:', stateValues);
-    if (values && values !== stateValues.passwd) {
+    if (values && values !== stateValues.password) {
       callback('两次输入密码不一致');
     } else {
       callback();
@@ -48,13 +48,17 @@ export default function UserForm() {
   const formChange = formValue => setValue(formValue);
 
   const validateAllFormField = () => {
-    formRef.validateAll((errors, values) => {
+    formRef.validateAll(async (errors, values) => {
       if (errors) {
         console.log('errors', errors);
         return;
       }
-
-      console.log('values:', values);
+      const { url, method } = api.addUser();
+      await request({
+        url,
+        method,
+        data: values,
+     });
       Toast.success('添加成功');
     });
   };
@@ -77,10 +81,10 @@ export default function UserForm() {
                 用户名：
               </Col>
               <Col xxs="16" s="12" l="10">
-                <IceFormBinder name="username" required message="必填">
+                <IceFormBinder name="name" required message="必填">
                   <Input placeholder="请输入用户名" />
                 </IceFormBinder>
-                <IceFormError name="username" />
+                <IceFormError name="name" />
               </Col>
             </Row>
 
@@ -89,10 +93,10 @@ export default function UserForm() {
                 昵称：
               </Col>
               <Col xxs="16" s="12" l="10">
-                <IceFormBinder name="displayName">
+                <IceFormBinder name="cn_name">
                   <Input placeholder="请输入昵称" />
                 </IceFormBinder>
-                <IceFormError name="displayName" />
+                <IceFormError name="cn_name" />
               </Col>
             </Row>
 
@@ -107,9 +111,7 @@ export default function UserForm() {
                   required
                   message="请输入正确的邮箱"
                 >
-                  <Input
-                    placeholder="ice-admin@alibaba-inc.com"
-                  />
+                  <Input placeholder="lengband@163.com" />
                 </IceFormBinder>
                 <IceFormError name="email" />
               </Col>
@@ -117,33 +119,15 @@ export default function UserForm() {
 
             <Row className={styles.formItem}>
               <Col xxs="6" s="4" l="3" className={styles.formLabel}>
-                用户组：
+                角色：
               </Col>
               <Col xxs="16" s="12" l="10">
-                <IceFormBinder name="userGroup">
+                <IceFormBinder name="role">
                   <Select
                     placeholder="请选择..."
                     dataSource={[
-                      { label: '管理员', value: 'administrator' },
-                      { label: '投稿者', value: 'contributor' },
-                    ]}
-                  />
-                </IceFormBinder>
-              </Col>
-            </Row>
-
-            <Row className={styles.formItem}>
-              <Col xxs="6" s="4" l="3" className={styles.formLabel}>
-                状态：
-              </Col>
-              <Col xxs="16" s="12" l="10">
-                <IceFormBinder name="userState">
-                  <Select
-                    placeholder="请选择..."
-                    dataSource={[
-                      { label: '有效', value: 'valid' },
-                      { label: '禁用', value: 'disabled' },
-                      { label: '过期', value: 'invalid' },
+                      { label: '管理员', value: 'admin' },
+                      { label: '用户', value: 'member' },
                     ]}
                   />
                 </IceFormBinder>
@@ -156,7 +140,7 @@ export default function UserForm() {
               </Col>
               <Col xxs="16" s="12" l="10">
                 <IceFormBinder
-                  name="passwd"
+                  name="password"
                   required
                   validator={checkPasswd}
                 >
@@ -165,7 +149,7 @@ export default function UserForm() {
                     placeholder="请重新输入新密码"
                   />
                 </IceFormBinder>
-                <IceFormError name="passwd" />
+                <IceFormError name="password" />
               </Col>
             </Row>
 

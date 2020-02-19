@@ -97,7 +97,7 @@ export default () => (
                     <div className={styles.commentTitle}>{item.title}</div>
                     <div className={styles.commentTime}>{item.time}</div>
                   </div>
-                  <div className={styles.commentNum}>{item.num}</div>
+                  <div className={styles.comment_num}>{item.num}</div>
                 </a>
               );
             })}

@@ -50,6 +50,14 @@ export const api = {
     URL: `/user/${id}`,
     method: 'GET',
   }),
+  delUser: id => ({
+    url: `/user/${id}`,
+    method: 'DELETE',
+  }),
+  addUser: () => ({
+    url: 'user/create',
+    method: 'POST',
+  }),
   // 标签
   getTagList: () => ({
     url: '/tag',

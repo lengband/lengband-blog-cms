@@ -1,9 +1,8 @@
 import { useReducer } from 'react';
 import axios from 'axios';
+import { Message } from '@alifd/next';
 import { baseURL } from './api';
 import { getToken } from './auth';
-
-// import { Message } from '@alifd/next';
 
 // 新创建一个axios实例，并进行基础配置
 const http = axios.create({
@@ -14,7 +13,6 @@ const http = axios.create({
 // http.defaults.withCredentials = true;
 
 http.interceptors.request.use(c => {
-  console.log(c, 'ccc ');
   const config = c;
   if (config.url.includes('login')) {
     return config;
@@ -41,7 +39,7 @@ export async function request(options) {
       return { response, data };
     }
   } catch (error) {
-    console.error(error);
+    Message.error(`请求失败：${error}`);
     throw error;
   }
 }
@@ -69,38 +67,24 @@ export function useRequest(options) {
    * @param {object} config - axios config to shallow merged with options before making request
    */
   async function request(config) {
-    console.log(1);
-
     try {
-      dispatch({
-        type: 'init',
-      });
-
+      dispatch({ type: 'init' });
       const response = await http({
         ...options,
         ...config,
       });
-
       const { data, error } = handleResponse(response);
-
       if (error) {
         throw error;
       } else {
-        dispatch({
-          type: 'success',
-          response,
-        });
+        dispatch({ type: 'success', response });
         return { response, data };
       }
     } catch (error) {
-      dispatch({
-        type: 'error',
-        error,
-      });
+      dispatch({ type: 'error', error });
       throw error;
     }
   }
-
   return {
     ...state,
     request,
