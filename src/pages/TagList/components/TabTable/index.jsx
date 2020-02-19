@@ -75,8 +75,8 @@ export default function TabTable() {
     },
     {
       title: '文章数',
-      dataIndex: 'article_num',
-      key: 'article_num',
+      dataIndex: 'post_num',
+      key: 'post_num',
       width: 200,
     },
     {

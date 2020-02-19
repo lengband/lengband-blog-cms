@@ -21,24 +21,24 @@ export const api = {
     method: 'DELETE',
   }),
   // 文章
-  addArticle: () => ({
-    url: '/article/create',
+  addPost: () => ({
+    url: '/post/create',
     method: 'POST',
   }),
-  updateArticle: id => ({
-    url: `/article/${id}`,
+  updatePost: id => ({
+    url: `/post/${id}`,
     method: 'PATCH',
   }),
-  getArticleList: () => ({
-    url: '/article',
+  getPostList: () => ({
+    url: '/post',
     method: 'GET',
   }),
-  delArticle: id => ({
-    url: `/article/${id}`,
+  delPost: id => ({
+    url: `/post/${id}`,
     method: 'DELETE',
   }),
-  getArticleById: id => ({
-    url: `/article/${id}`,
+  getPostById: id => ({
+    url: `/post/${id}`,
     method: 'GET',
   }),
   // 用户

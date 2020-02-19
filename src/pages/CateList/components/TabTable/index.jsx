@@ -12,42 +12,42 @@ import { api } from '@/utils/api';
 //   {
 //     name: '前端',
 //     cn_name: 'frontEnd',
-//     article_num: '2',
+//     post_num: '2',
 //   },
 //   {
 //     name: '后端',
 //     cn_name: 'backEnd',
-//     article_num: '3',
+//     post_num: '3',
 //   },
 //   {
 //     name: '开发工具',
 //     cn_name: 'tool',
-//     article_num: '10',
+//     post_num: '10',
 //   },
 //   {
 //     name: '数据库',
 //     cn_name: 'database',
-//     article_num: '26',
+//     post_num: '26',
 //   },
 //   {
 //     name: '系统',
 //     cn_name: 'system',
-//     article_num: '18',
+//     post_num: '18',
 //   },
 //   {
 //     name: '服务器',
 //     cn_name: 'server',
-//     article_num: '6',
+//     post_num: '6',
 //   },
 //   {
 //     name: '框架',
 //     cn_name: 'framework',
-//     article_num: '39',
+//     post_num: '39',
 //   },
 //   {
 //     name: '其他',
 //     cn_name: 'other',
-//     article_num: '52',
+//     post_num: '52',
 //   },
 // ];
 
@@ -106,8 +106,8 @@ export default function TabTable() {
     {
       title: '文章数',
       width: 150,
-      dataIndex: 'article_num',
-      key: 'article_num',
+      dataIndex: 'post_num',
+      key: 'post_num',
     },
     {
       title: '操作',

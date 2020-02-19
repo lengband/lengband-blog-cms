@@ -8,7 +8,7 @@ import styles from './index.module.scss';
 const { Row, Col } = Grid;
 
 const dataSource = {
-  articles: [
+  posts: [
     {
       title: '这里是文章的标题1',
       time: '2018-03-31',
@@ -70,7 +70,7 @@ export default () => (
             </a>
           </h3>
           <div className={styles.items}>
-            {dataSource.articles.map((item, index) => {
+            {dataSource.posts.map((item, index) => {
               return (
                 <a key={index} href="#" className={cx(styles.item, 'link')}>
                   <div className={styles.itemTitle}>{item.title}</div>

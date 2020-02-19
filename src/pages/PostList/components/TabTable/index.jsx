@@ -22,10 +22,10 @@ function TabTable(props) {
   const [dataSource, setDataSource] = useState({});
   const [tabKey, setTabKey] = useState(tabs[0].key);
 
-  const fetchArticle = async function () {
+  const fetchPost = async function () {
     try {
       const { data } = await request({
-        url: api.getArticleList().url,
+        url: api.getPostList().url,
       });
       setDataSource({
         [tabKey]: data.data,
@@ -36,19 +36,19 @@ function TabTable(props) {
   };
 
   useEffect(() => {
-    fetchArticle();
+    fetchPost();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabKey]);
 
   const handleRemove = async (value, index, record) => {
     try {
-      const { url, method } = api.delArticle(record._id);
+      const { url, method } = api.delPost(record._id);
       await request({
         url,
         method,
       });
       Message.success('操作成功');
-      fetchArticle();
+      fetchPost();
     } catch (error) {
       Message.error(`操作失败：${error}`);
     }

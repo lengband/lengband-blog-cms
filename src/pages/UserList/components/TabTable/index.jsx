@@ -70,8 +70,8 @@ function TabTable(props) {
     },
     {
       title: '文章数',
-      dataIndex: 'article_num',
-      key: 'article_num',
+      dataIndex: 'post_num',
+      key: 'post_num',
     },
     {
       title: '评论数',

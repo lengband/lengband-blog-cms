@@ -55,8 +55,8 @@ function ContentEditor(props) {
 
   const formChange = formValue => setValue(formValue);
 
-  const fetchArticle = async id => {
-    const { url, method } = api.getArticleById(id);
+  const fetchPost = async id => {
+    const { url, method } = api.getPostById(id);
     try {
       const { data } = await request({
         url,
@@ -88,7 +88,7 @@ function ContentEditor(props) {
       if (errors) {
         return false;
       }
-      const { url, method } = api.addArticle();
+      const { url, method } = api.addPost();
       await request({
         url,
         method,
@@ -103,7 +103,7 @@ function ContentEditor(props) {
     fetchType();
     fetchTag();
     if (props.match.params.id) {
-      fetchArticle(props.match.params.id);
+      fetchPost(props.match.params.id);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
