@@ -1,7 +1,8 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { Message } from '@alifd/next';
+import { withRouter } from 'react-router';
+import { Message, Button } from '@alifd/next';
 import IceContainer from '@icedesign/container';
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
@@ -9,7 +10,7 @@ import DeleteBalloon from './components/DeleteBalloon';
 import { useRequest, request } from '@/utils/request';
 import { api } from '@/utils/api';
 
-export default function TabTable() {
+function TabTable(props) {
   const { response: userList, request: fetchUser } = useRequest({
     url: api.getUserList().url,
   });
@@ -27,6 +28,11 @@ export default function TabTable() {
       Message.error(`操作失败：${error}`);
     }
   };
+
+  const changePwd = (id) => {
+    const { history } = props;
+    history.push(`/users/pwd/${id}`);
+  }
 
   const handleUpdate = async (data, id) => {
     try {
@@ -100,6 +106,7 @@ export default function TabTable() {
               record={record}
               handleUpdate={(formData) => handleUpdate(formData, record._id)}
             />
+            <Button type="secondary" onClick={() => changePwd(record._id)}>修改密码</Button>
             <DeleteBalloon
               handleRemove={() => handleRemove(value, index, record)}
             />
@@ -126,3 +133,5 @@ export default function TabTable() {
     </div>
   );
 }
+
+export default withRouter(TabTable)

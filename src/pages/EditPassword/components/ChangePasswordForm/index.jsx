@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import IceContainer from '@icedesign/container';
+import { withRouter } from 'react-router';
 import { Input, Grid, Button, Message } from '@alifd/next';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+import stores from '@/stores';
+import { api } from '@/utils/api';
+import { request } from '@/utils/request';
 import styles from './index.module.scss';
 
 const { Row, Col } = Grid;
 const Toast = Message;
 
-export default function ChangePasswordForm() {
+function ChangePasswordForm(props) {
+  const user = stores.useStore('user');
   const [value, setValue] = useState({
-    passwd: '',
+    password: '',
     rePasswd: '',
   });
 
@@ -31,24 +36,40 @@ export default function ChangePasswordForm() {
   };
 
   const checkPasswd2 = (rule, values, callback, stateValues) => {
-    if (values && values !== stateValues.passwd) {
+    if (values && values !== stateValues.password) {
       callback('两次输入密码不一致');
     } else {
       callback();
     }
   };
 
+  const getUserId = () => {
+    let id = user.userInfo._id;
+    if (props.match.params.id) {
+      id = props.match.params.id;
+    }
+    return id;
+  };
+
   const formChange = formValue => setValue(formValue);
 
   const validateAllFormField = () => {
-    formRef.validateAll((errors, values) => {
+    formRef.validateAll(async (errors, values) => {
       if (errors) {
         console.log('errors', errors);
         return;
       }
-
-      console.log('values:', values);
+      const id = getUserId();
+      const { url, method } = api.updateUser(id);
+      await request({
+        url,
+        method,
+        data: { password: values.password },
+      });
       Toast.success('修改成功');
+      if (!props.match.params.id) {
+        props.history.push('/user/login');
+      }
     });
   };
 
@@ -71,7 +92,7 @@ export default function ChangePasswordForm() {
               </Col>
               <Col xxs="16" s="10" l="6">
                 <IceFormBinder
-                  name="passwd"
+                  name="password"
                   required
                   validator={checkPasswd}
                 >
@@ -80,7 +101,7 @@ export default function ChangePasswordForm() {
                     placeholder="请重新输入新密码"
                   />
                 </IceFormBinder>
-                <IceFormError name="passwd" />
+                <IceFormError name="password" />
               </Col>
             </Row>
 
@@ -125,3 +146,5 @@ export default function ChangePasswordForm() {
     </div>
   );
 }
+
+export default withRouter(ChangePasswordForm);

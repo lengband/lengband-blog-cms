@@ -68,6 +68,10 @@ const routerConfig = [
         component: EditPassword,
       },
       {
+        path: '/users/pwd/:id',
+        component: EditPassword,
+      },
+      {
         path: '/tag/list',
         component: TagList,
       },

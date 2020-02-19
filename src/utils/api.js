@@ -9,7 +9,7 @@ export const api = {
     method: 'GET',
   }),
   addType: () => ({
-    url: 'type/create',
+    url: '/type/create',
     method: 'POST',
   }),
   updateType: id => ({
@@ -55,8 +55,12 @@ export const api = {
     method: 'DELETE',
   }),
   addUser: () => ({
-    url: 'user/create',
+    url: '/user/create',
     method: 'POST',
+  }),
+  updateUser: id => ({
+    url: `/user/${id}`,
+    method: 'PATCH',
   }),
   // 标签
   getTagList: () => ({
@@ -64,7 +68,7 @@ export const api = {
     method: 'GET',
   }),
   addTag: () => ({
-    url: 'tag/create',
+    url: '/tag/create',
     method: 'POST',
   }),
   updateTag: id => ({
