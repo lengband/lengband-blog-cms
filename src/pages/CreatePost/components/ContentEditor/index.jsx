@@ -95,6 +95,7 @@ function ContentEditor(props) {
         data: values,
      });
       Message.success('提交成功');
+      props.history.push('/post/list');
     });
   };
 

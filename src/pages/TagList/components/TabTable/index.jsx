@@ -61,10 +61,10 @@ export default function TabTable() {
     },
     {
       title: '标签类型',
-      dataIndex: 'tag_type',
-      key: 'tag_type',
+      dataIndex: 'tag_status',
+      key: 'tag_status',
       render: (value, index, record) => {
-        const tagItem = tagTypeOpts.find(val => val.value === record.tag_type);
+        const tagItem = tagTypeOpts.find(val => val.value === record.tag_status);
         if (!tagItem) return '-';
         return (
           <span>

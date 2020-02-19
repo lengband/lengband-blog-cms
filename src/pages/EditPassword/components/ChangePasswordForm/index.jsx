@@ -124,6 +124,7 @@ function ChangePasswordForm(props) {
                   <Input
                     htmlType="password"
                     placeholder="两次输入密码保持一致"
+                    onPressEnter={validateAllFormField}
                   />
                 </IceFormBinder>
                 <IceFormError name="rePasswd" />

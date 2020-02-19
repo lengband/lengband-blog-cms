@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import IceContainer from '@icedesign/container';
+import { withRouter } from 'react-router';
 import { Grid, Input, Button, Message, Select } from '@alifd/next';
 import {
   FormBinderWrapper,
@@ -16,13 +17,13 @@ import { tagTypeOpts } from '@/constants';
 const { Row, Col } = Grid;
 const Toast = Message;
 
-export default function SimpleFluencyForm() {
+function SimpleFluencyForm(props) {
   let formRef;
 
   const [formValue, setFormValue] = useState({
     name: '',
     cn_name: '',
-    tag_type: '',
+    tag_status: '',
   });
 
   const itemRender = item => {
@@ -44,13 +45,13 @@ export default function SimpleFluencyForm() {
         return;
       }
       const { url, method } = api.addTag();
-      const { data } = await request({
+      await request({
         url,
         method,
         data: values,
      });
-      console.log('data:', data);
       Toast.success('添加成功');
+      props.history.push('/tag/list');
     });
   };
 
@@ -97,7 +98,7 @@ export default function SimpleFluencyForm() {
                 <span>标签类型：</span>
               </Col>
               <Col xxs="16" s="10" l="6">
-                <FormBinder name="tag_type" required message="必填项">
+                <FormBinder name="tag_status" required message="必填项">
                   <Select
                     dataSource={tagTypeOpts}
                     itemRender={itemRender}
@@ -105,7 +106,7 @@ export default function SimpleFluencyForm() {
                     placeholder="请选择标签类型" />
                 </FormBinder>
                 <div className={styles.formErrorWrapper}>
-                  <FormError name="tag_type" />
+                  <FormError name="tag_status" />
                 </div>
               </Col>
             </Row>
@@ -125,3 +126,5 @@ export default function SimpleFluencyForm() {
     </div>
   );
 }
+
+export default withRouter(SimpleFluencyForm);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import IceContainer from '@icedesign/container';
+import { withRouter } from 'react-router';
 import { Grid, Input, Button, Message } from '@alifd/next';
 import {
   FormBinderWrapper,
@@ -14,7 +15,7 @@ import { api } from '@/utils/api';
 const { Row, Col } = Grid;
 const Toast = Message;
 
-export default function SimpleFluencyForm() {
+function SimpleFluencyForm(props) {
   let formRef;
 
   const [formValue, setFormValue] = useState({
@@ -31,13 +32,13 @@ export default function SimpleFluencyForm() {
         return;
       }
       const { url, method } = api.addType();
-      const { data } = await request({
+      await request({
         url,
         method,
         data: values,
      });
-      console.log('data:', data);
       Toast.success('添加成功');
+      props.history.push('/cate/list');
     });
   };
 
@@ -59,7 +60,7 @@ export default function SimpleFluencyForm() {
               </Col>
               <Col xxs="16" s="10" l="6">
                 <FormBinder name="name" required message="必填项">
-                  <Input />
+                  <Input placeholder="请输入内容" />
                 </FormBinder>
                 <div className={styles.formErrorWrapper}>
                   <FormError name="name" />
@@ -72,7 +73,7 @@ export default function SimpleFluencyForm() {
               </Col>
               <Col xxs="16" s="10" l="6">
                 <FormBinder name="cn_name" required message="必填项">
-                  <Input />
+                  <Input placeholder="请输入内容" onPressEnter={handleSubmit} />
                 </FormBinder>
                 <div className={styles.formErrorWrapper}>
                   <FormError name="cn_name" />
@@ -95,3 +96,5 @@ export default function SimpleFluencyForm() {
     </div>
   );
 }
+
+export default withRouter(SimpleFluencyForm);

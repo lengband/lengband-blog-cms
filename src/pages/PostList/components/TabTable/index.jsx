@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import IceContainer from '@icedesign/container';
 import { Tab, Message, Button } from '@alifd/next';
 import IceLabel from '@icedesign/label';
+import moment from 'moment';
 import CustomTable from './components/CustomTable';
 import DeleteBalloon from './components/DeleteBalloon';
 import { request } from '@/utils/request';
@@ -82,7 +83,7 @@ function TabTable(props) {
           <span>
             {
               record.tags.map(tag => (
-                <IceLabel key={tag._id} inverse={false} status="primary">{ tag.cn_name }</IceLabel>
+                <IceLabel key={tag._id} inverse={false} status={tag.tag_status}>{ tag.cn_name }</IceLabel>
               ))
             }
           </span>
@@ -93,6 +94,9 @@ function TabTable(props) {
       title: '发布时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
+      render: (value, index, record) => {
+        return moment(record.createdAt).format();
+      },
     },
     {
       title: '浏览量',

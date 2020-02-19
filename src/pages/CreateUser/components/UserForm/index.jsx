@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import IceContainer from '@icedesign/container';
+import { withRouter } from 'react-router';
 import { Input, Grid, Button, Select, Message } from '@alifd/next';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
@@ -13,7 +14,7 @@ import { api } from '@/utils/api';
 const { Row, Col } = Grid;
 const Toast = Message;
 
-export default function UserForm() {
+function UserForm(props) {
   const [value, setValue] = useState({
     name: '',
     cn_name: '',
@@ -60,6 +61,7 @@ export default function UserForm() {
         data: values,
      });
       Toast.success('添加成功');
+      props.history.push('/users/list');
     });
   };
 
@@ -172,6 +174,7 @@ export default function UserForm() {
                   <Input
                     htmlType="password"
                     placeholder="两次输入密码保持一致"
+                    onPressEnter={validateAllFormField}
                   />
                 </IceFormBinder>
                 <IceFormError name="rePasswd" />
@@ -194,3 +197,5 @@ export default function UserForm() {
     </div>
   );
 }
+
+export default withRouter(UserForm);
