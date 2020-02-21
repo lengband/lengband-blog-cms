@@ -89,10 +89,10 @@ function TabTable(props) {
     {
       title: '操作',
       key: 'action',
-      width: 200,
+      width: 240,
       render: (value, index, record) => {
         return (
-          <span>
+          <div className="d-flex justify-content-between">
             <EditDialog
               index={index}
               record={record}
@@ -102,7 +102,7 @@ function TabTable(props) {
             <DeleteBalloon
               handleRemove={() => handleRemove(value, index, record)}
             />
-          </span>
+          </div>
         );
       },
     },

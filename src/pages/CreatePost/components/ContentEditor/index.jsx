@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import marked from 'marked';
 import hljs from "highlight.js";
-import 'highlight.js/styles/monokai-sublime.css';
+// highlight.js 样式demo：https://highlightjs.org/static/demo/
+import 'highlight.js/styles/github.css';
 import IceContainer from '@icedesign/container';
 import { Input, Grid, Form, Button, Select, Message } from '@alifd/next';
 import {
@@ -13,6 +14,7 @@ import {
 import IcePanel from '@icedesign/panel';
 import _ from 'lodash';
 
+import Markdown from './Markdown';
 import styles from './index.module.scss';
 import { useRequest, request } from '@/utils/request';
 import { api } from '@/utils/api';
@@ -25,13 +27,13 @@ function ContentEditor(props) {
   const renderer = new marked.Renderer();
   marked.setOptions({
     renderer,
-    gfm: true,
     pedantic: false,
-    sanitize: false,
-    tables: true,
+    gfm: true,
     breaks: false,
+    sanitize: false,
     smartLists: true,
     smartypants: false,
+    xhtml: false,
     highlight (code) {
       return hljs.highlightAuto(code).value;
     },
@@ -55,6 +57,11 @@ function ContentEditor(props) {
 
   const formChange = formValue => setValue(formValue);
 
+  const setPreviewContent = value => {
+    const html = marked(value);
+    setMarkdownContent(html);
+  };
+
   const fetchPost = async id => {
     const { url, method } = api.getPostById(id);
     try {
@@ -69,18 +76,18 @@ function ContentEditor(props) {
         type: data.type._id,
         tags: data.tags,
       });
+      setPreviewContent(data.content);
     } catch (error) {
       throw error;
     }
   };
 
-  const changeContent = (value) => {
+  const changeContent = value => {
     setValue({
       ...value,
       content: value,
     });
-    const html = marked(value);
-    setMarkdownContent(html);
+    setPreviewContent(value);
   };
 
   const handleSubmit = () => {
@@ -105,7 +112,6 @@ function ContentEditor(props) {
     if (props.match.params.id) {
       fetchPost(props.match.params.id);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -192,13 +198,7 @@ function ContentEditor(props) {
             </FormItem>
             <FormItem label="正文" required>
               <IceFormBinder name="content" required message="请填写文章内容">
-                <Input.TextArea
-                  value={value.content}
-                  className="markdown-content"
-                  rows={35}
-                  onChange={changeContent}
-                  placeholder="文章内容"
-                />
+                <Markdown value={value.content} changeContent={changeContent} />
               </IceFormBinder>
               <IceFormError name="content" />
             </FormItem>
@@ -213,9 +213,7 @@ function ContentEditor(props) {
                   预览
                 </IcePanel.Header>
                 <IcePanel.Body>
-                  <div
-                    className="show-html"
-                    dangerouslySetInnerHTML={{ __html: markdownContent }} />
+                  <div dangerouslySetInnerHTML={{ __html: markdownContent }} />
                 </IcePanel.Body>
               </IcePanel>
             </FormItem>

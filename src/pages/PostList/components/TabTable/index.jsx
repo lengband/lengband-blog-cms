@@ -7,6 +7,7 @@ import IceLabel from '@icedesign/label';
 import moment from 'moment';
 import CustomTable from './components/CustomTable';
 import DeleteBalloon from './components/DeleteBalloon';
+import PublishBalloon from './components/PublishBalloon';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
 
@@ -37,7 +38,6 @@ function TabTable(props) {
 
   useEffect(() => {
     fetchPost();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabKey]);
 
   const handleRemove = async (value, index, record) => {
@@ -46,6 +46,21 @@ function TabTable(props) {
       await request({
         url,
         method,
+      });
+      Message.success('操作成功');
+      fetchPost();
+    } catch (error) {
+      Message.error(`操作失败：${error}`);
+    }
+  };
+
+  const handlePublish = async (data, record) => {
+    try {
+      const { url, method } = api.updatePost(record._id);
+      await request({
+        url,
+        method,
+        data,
       });
       Message.success('操作成功');
       fetchPost();
@@ -73,6 +88,17 @@ function TabTable(props) {
       title: '类别',
       dataIndex: 'type.cn_name',
       key: 'type.cn_name',
+    },
+    {
+      title: '是否发布',
+      dataIndex: 'is_publish',
+      key: 'is_publish',
+      render: (value, index, record) => {
+        if (record.is_publish) {
+          return <IceLabel status="success">已发布</IceLabel>;
+        }
+        return <IceLabel status="default">未发布</IceLabel>;
+      },
     },
     {
       title: '标签',
@@ -106,17 +132,21 @@ function TabTable(props) {
     {
       title: '操作',
       key: 'action',
-      width: 150,
+      width: 200,
       render: (value, index, record) => {
         return (
-          <span>
+          <div className="d-flex justify-content-between">
             <Button type="primary" onClick={() => pushUpdate(record._id)}>
               编辑
             </Button>
             <DeleteBalloon
               handleRemove={() => handleRemove(value, index, record)}
             />
-          </span>
+            <PublishBalloon
+              record={record}
+              handlePublish={data => handlePublish(data, record)}
+            />
+          </div>
         );
       },
     },

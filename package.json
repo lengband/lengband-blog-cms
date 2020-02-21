@@ -21,20 +21,18 @@
     "enquire-js": "^0.1.2",
     "highlight.js": "^9.18.1",
     "immutable": "^3.8.2",
-    "is-hotkey": "^0.1.1",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
+    "markdown-it": "^10.0.0",
     "marked": "^0.8.0",
     "moment": "^2.23.0",
     "prop-types": "^15.5.8",
     "react": "^16.4.1",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.4.1",
-    "react-router-dom": "^4.2.2",
-    "slate": "^0.32.5",
-    "slate-plain-serializer": "^0.5.6",
-    "slate-react": "^0.11.6"
+    "react-markdown-editor-lite": "^1.0.1",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "@ice/spec": "^0.1.1",
