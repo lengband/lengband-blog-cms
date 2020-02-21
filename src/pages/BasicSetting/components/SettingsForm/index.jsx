@@ -54,11 +54,11 @@ export default function SettingsForm() {
       gender: userInfo.gender,
       notice: userInfo.notice,
       email: userInfo.email,
-      avatar: [{
+      avatar: userInfo.avatar ? [{
         url: userInfo.avatar,
         name: '',
         state: 'done',
-      }],
+      }] : [],
       website: userInfo.website,
       github: userInfo.github,
       description: userInfo.description,

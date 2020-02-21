@@ -8,12 +8,14 @@ import {
 } from '@icedesign/form-binder';
 import IceIcon from '@icedesign/foundation-symbol';
 import styles from './index.module.scss';
+import { request } from '@/utils/request';
+import { api } from '@/utils/api';
 
 const UserRegister = (props) => {
   const [value, setValue] = useState({
     name: '',
     email: '',
-    passwd: '',
+    password: '',
     rePasswd: '',
   });
 
@@ -34,7 +36,7 @@ const UserRegister = (props) => {
   const checkPasswd2 = (rule, values, callback, stateValues) => {
     if (!values) {
       callback('请输入正确的密码');
-    } else if (values && values !== stateValues.passwd) {
+    } else if (values && values !== stateValues.password) {
       callback('两次输入密码不一致');
     } else {
       callback();
@@ -44,12 +46,23 @@ const UserRegister = (props) => {
   const formChange = formValue => setValue(formValue);
 
   const handleSubmit = () => {
-    formRef.validateAll((errors, values) => {
+    formRef.validateAll(async (errors, values) => {
       if (errors) {
         console.log('errors', errors);
         return;
       }
       console.log(values);
+      const { url, method } = api.addUser();
+      const data = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      };
+      await request({
+        url,
+        method,
+        data,
+     });
       Message.success('注册成功');
       props.history.push('/user/login');
     });
@@ -97,7 +110,7 @@ const UserRegister = (props) => {
           <div className={styles.formItem}>
             <IceIcon type="lock" size="small" className={styles.inputIcon} />
             <IceFormBinder
-              name="passwd"
+              name="password"
               required
               validator={checkPasswd}
             >
@@ -108,7 +121,7 @@ const UserRegister = (props) => {
                 className={styles.inputCol}
               />
             </IceFormBinder>
-            <IceFormError name="passwd" />
+            <IceFormError name="password" />
           </div>
 
           <div className={styles.formItem}>
