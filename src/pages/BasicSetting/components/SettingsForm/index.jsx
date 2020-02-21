@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+  /* eslint-disable */
+
+import React, { useState, useEffect, useRef } from 'react';
 import IceContainer from '@icedesign/container';
 import {
   Input,
@@ -14,66 +16,97 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
+import _ from 'lodash';
+import stores from '@/stores';
 import styles from './index.module.scss';
+import { request } from '@/utils/request';
+import { api, baseURL } from '@/utils/api';
 
 const { Row, Col } = Grid;
 const { Group: RadioGroup } = Radio;
 
 
-function beforeUpload(info) {
-  console.log('beforeUpload callback : ', info);
-}
-
-function onChange(info) {
-  console.log('onChane callback : ', info);
-}
-
-function onSuccess(res, file) {
-  console.log('onSuccess callback : ', res, file);
-}
-
-function onError(file) {
-  console.log('onError callback : ', file);
-}
-
-function formChange(value) {
-  console.log('value', value);
-}
-
-
 export default function SettingsForm() {
-  /* eslint-disable */
+  const user = stores.useStore('user');
+  const { userInfo: userMsg, fetchUserInfo: updateUserStore } = user;
+
+  const childRef = useRef();
+
   const [value, setValue] = useState({
     name: '',
-    gender: 'male',
-    notice: false,
+    gender: '',
+    notice: '',
     email: '',
     avatar: [],
-    siteUrl: '',
-    githubUrl: '',
-    twitterUrl: '',
+    website: '',
+    github: '',
     description: '',
   });
-  /* eslint-enable */
+
+  const fetchUserInfo = async () => {
+    const { url, method } = api.getUserInfo(userMsg._id);
+    const { data: userInfo } = await request({
+      url,
+      method,
+    });
+    setValue({
+      name: userInfo.name,
+      gender: userInfo.gender,
+      notice: userInfo.notice,
+      email: userInfo.email,
+      avatar: [{
+        url: userInfo.avatar,
+        name: '',
+        state: 'done',
+      }],
+      website: userInfo.website,
+      github: userInfo.github,
+      description: userInfo.description,
+    })
+  };
+
+
+  const handleUpdate = async (data) => {
+    const { url, method } = api.updateUser(userMsg._id);
+    await request({
+      url,
+      method,
+      data,
+    });
+    return true;
+  };
 
   const formRef = React.createRef();
 
+  const uploadAvatar = async avatar => {
+    const uploadRef = childRef.current.getInstance();
+    await uploadRef.startUpload();
+    return true;
+  };
+
   const validateAllFormField = () => {
-    formRef.current.validateAll((errors, values) => {
+    formRef.current.validateAll(async (errors, values) => {
       if (errors) {
         return;
       }
-      console.log(values);
+      const data = _.cloneDeep(values);
+      delete data.avatar;
+      await handleUpdate(data);
+      await uploadAvatar(values.avatar);
+      await updateUserStore()
       Message.success('提交成功');
     });
   };
+
+  useEffect(() => {
+    fetchUserInfo()
+  }, [])
 
   return (
     <div className={styles.SettingsForm}>
       <IceContainer>
         <IceFormBinderWrapper
           value={value}
-          onChange={formChange}
           ref={formRef}
         >
           <div className={styles.formContent}>
@@ -85,7 +118,7 @@ export default function SettingsForm() {
               </Col>
               <Col xxs="16" s="10" l="6">
                 <IceFormBinder name="name" required max={10} message="必填">
-                  <Input placeholder="于江水" />
+                  <Input placeholder="冷板凳" />
                 </IceFormBinder>
                 <IceFormError name="name" />
               </Col>
@@ -96,18 +129,16 @@ export default function SettingsForm() {
                 头像：
               </Col>
               <Col xxs="16" s="10" l="6">
-                <IceFormBinder name="avatar" required message="必填">
+                <IceFormBinder name="avatar">
                   <Upload.Card
                     listType="card"
-                    action=""
+                    limit={1}
+                    autoUpload={false}
+                    action={`${window.location.origin}${baseURL}/upload`}
+                    ref={childRef}
                     accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
-                    beforeUpload={beforeUpload}
-                    onChange={onChange}
-                    onSuccess={onSuccess}
-                    onError={onError}
                   />
                 </IceFormBinder>
-                <IceFormError name="avatar" />
               </Col>
             </Row>
 
@@ -164,16 +195,16 @@ export default function SettingsForm() {
               <Col xxs="16" s="10" l="6">
                 <IceFormBinder
                   type="url"
-                  name="siteUrl"
+                  name="website"
                   required
                   message="请输入正确的网站地址"
                 >
                   <Input
                     type="url"
-                    placeholder="https://alibaba.github.io/ice"
+                    placeholder="https://github.com/lengband"
                   />
                 </IceFormBinder>
-                <IceFormError name="siteUrl" />
+                <IceFormError name="website" />
               </Col>
             </Row>
 
@@ -184,32 +215,15 @@ export default function SettingsForm() {
               <Col xxs="16" s="10" l="6">
                 <IceFormBinder
                   type="url"
-                  name="githubUrl"
+                  name="github"
                   required
                   message="请输入正确的 Github 地址"
                 >
                   <Input
-                    placeholder="https://github.com/alibaba/ice"
+                    placeholder="https://github.com/lengband"
                   />
                 </IceFormBinder>
-                <IceFormError name="githubUrl" />
-              </Col>
-            </Row>
-
-            <Row className={styles.formItem}>
-              <Col xxs="6" s="4" l="3" className={styles.label}>
-                Twitter：
-              </Col>
-              <Col xxs="16" s="10" l="6">
-                <IceFormBinder
-                  type="url"
-                  name="twitterUrl"
-                  required
-                  message="请输入正确的 Twitter 地址"
-                >
-                  <Input placeholder="https://twitter.com" />
-                </IceFormBinder>
-                <IceFormError name="twitterUrl" />
+                <IceFormError name="github" />
               </Col>
             </Row>
 

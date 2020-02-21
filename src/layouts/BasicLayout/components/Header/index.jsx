@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Balloon, Icon, Nav } from '@alifd/next';
 import IceImg from '@icedesign/img';
 import Layout from '@icedesign/layout';
@@ -12,7 +12,12 @@ import stores from '@/stores';
 export default function Header(props) {
   const { isMobile, className, style } = props;
   const user = stores.useStore('user');
-  const { userInfo } = user;
+  const { userInfo, fetchUserInfo } = user;
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
   return (
     <Layout.Header
       className={`${styles.iceDesignLayoutHeader} ${className}`}
@@ -65,11 +70,11 @@ export default function Header(props) {
               <IceImg
                 height={40}
                 width={40}
-                src="https://img.alicdn.com/tfs/TB1L6tBXQyWBuNjy0FpXXassXXa-80-80.png"
+                src={userInfo.avatar || ''}
                 className={styles.userAvatar}
               />
               <div className={styles.userProfile}>
-          <span className={styles.userName}>{ userInfo.name }</span>
+                <span className={styles.userName}>{ userInfo.name }</span>
                 {/* <br />
                 <span className={styles.userDepartment}>技术部</span> */}
               </div>

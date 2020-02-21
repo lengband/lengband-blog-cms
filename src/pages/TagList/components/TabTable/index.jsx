@@ -20,32 +20,24 @@ export default function TabTable() {
   }, []);
 
   const handleRemove = async (value, index, record) => {
-    try {
-      const { url, method } = api.delTag(record._id);
-      await request({
-        url,
-        method,
-      });
-      Message.success('操作成功');
-      fetchTag();
-    } catch (error) {
-      Message.error(`操作失败：${error}`);
-    }
+    const { url, method } = api.delTag(record._id);
+    await request({
+      url,
+      method,
+    });
+    Message.success('操作成功');
+    fetchTag();
   };
 
   const handleUpdate = async (data, id) => {
-    try {
-      const { url, method } = api.updateTag(id);
-      await request({
-        url,
-        method,
-        data,
-      });
-      Message.success('操作成功');
-      fetchTag();
-    } catch (error) {
-      Message.error(`操作失败：${error}`);
-    }
+    const { url, method } = api.updateTag(id);
+    await request({
+      url,
+      method,
+      data,
+    });
+    Message.success('操作成功');
+    fetchTag();
   };
 
   const columns = [

@@ -52,7 +52,6 @@ import { api } from '@/utils/api';
 // ];
 
 export default function TabTable() {
-  // const [dataSource, setDataSource] = useState(MOCK_DATA);
   const { response: typeList, request: fetchType } = useRequest({
     url: api.getTypeList().url,
   });
@@ -62,32 +61,24 @@ export default function TabTable() {
   }, []);
 
   const handleRemove = async (value, index, record) => {
-    try {
-      const { url, method } = api.delType(record._id);
-      await request({
-        url,
-        method,
-      });
-      Message.success('操作成功');
-      fetchType();
-    } catch (error) {
-      Message.error(`操作失败：${error}`);
-    }
+    const { url, method } = api.delType(record._id);
+    await request({
+      url,
+      method,
+    });
+    Message.success('操作成功');
+    fetchType();
   };
 
   const handleUpdate = async (data, id) => {
-    try {
-      const { url, method } = api.updateType(id);
-      await request({
-        url,
-        method,
-        data,
-      });
-      Message.success('操作成功');
-      fetchType();
-    } catch (error) {
-      Message.error(`操作失败：${error}`);
-    }
+    const { url, method } = api.updateType(id);
+    await request({
+      url,
+      method,
+      data,
+    });
+    Message.success('操作成功');
+    fetchType();
   };
 
   const columns = [

@@ -47,7 +47,7 @@ export const api = {
     method: 'GET',
   }),
   getUserInfo: id => ({
-    URL: `/user/${id}`,
+    url: `/user/${id}`,
     method: 'GET',
   }),
   delUser: id => ({

@@ -16,17 +16,13 @@ function TabTable(props) {
   });
 
   const handleRemove = async (value, index, record) => {
-    try {
-      const { url, method } = api.delUser(record._id);
-      await request({
-        url,
-        method,
-      });
-      Message.success('操作成功');
-      fetchUser();
-    } catch (error) {
-      Message.error(`操作失败：${error}`);
-    }
+    const { url, method } = api.delUser(record._id);
+    await request({
+      url,
+      method,
+    });
+    Message.success('操作成功');
+    fetchUser();
   };
 
   const changePwd = (id) => {
@@ -35,18 +31,14 @@ function TabTable(props) {
   }
 
   const handleUpdate = async (data, id) => {
-    try {
-      const { url, method } = api.updateUser(id);
-      await request({
-        url,
-        method,
-        data,
-      });
-      Message.success('操作成功');
-      fetchUser();
-    } catch (error) {
-      Message.error(`操作失败：${error}`);
-    }
+    const { url, method } = api.updateUser(id);
+    await request({
+      url,
+      method,
+      data,
+    });
+    Message.success('操作成功');
+    fetchUser();
   };
 
   const columns = [
