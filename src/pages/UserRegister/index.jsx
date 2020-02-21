@@ -51,8 +51,7 @@ const UserRegister = (props) => {
         console.log('errors', errors);
         return;
       }
-      console.log(values);
-      const { url, method } = api.addUser();
+      const { url, method } = api.register();
       const data = {
         name: values.name,
         email: values.email,
@@ -137,6 +136,7 @@ const UserRegister = (props) => {
                 size="large"
                 placeholder="确认密码"
                 className={styles.inputCol}
+                onPressEnter={handleSubmit}
               />
             </IceFormBinder>
             <IceFormError name="rePasswd" />

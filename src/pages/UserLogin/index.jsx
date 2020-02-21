@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Input, Button, Checkbox, Message } from '@alifd/next';
 import {
@@ -10,13 +10,13 @@ import IceIcon from '@icedesign/foundation-symbol';
 import styles from './index.module.scss';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
-import { setToken } from '@/utils/auth';
+import { setToken, removeToken } from '@/utils/auth';
 
 const UserLogin = props => {
   const [value, setValue] = useState({
     name: '',
     password: '',
-    checkbox: true,
+    remember: true,
   });
 
   let formRef;
@@ -42,6 +42,10 @@ const UserLogin = props => {
       props.history.push('/');
     });
   };
+
+  useEffect(() => {
+    removeToken();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -73,13 +77,14 @@ const UserLogin = props => {
                 htmlType="password"
                 placeholder="密码"
                 className={styles.inputCol}
+                onPressEnter={handleSubmit}
               />
             </IceFormBinder>
             <IceFormError name="password" />
           </div>
 
           <div className={styles.formItem}>
-            <IceFormBinder name="checkbox" valuePropName="checked">
+            <IceFormBinder name="remember" valuePropName="checked">
               <Checkbox className={styles.checkbox}>记住账号</Checkbox>
             </IceFormBinder>
           </div>

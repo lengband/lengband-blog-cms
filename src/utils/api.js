@@ -3,6 +3,10 @@ export const baseURL = '/api';
 
 export const api = {
   login: () => '/login', // 检查用户名密码
+  register: () => ({
+    url: '/user/create',
+    method: 'POST',
+  }),
   // 类别
   getTypeList: () => ({
     url: '/type',

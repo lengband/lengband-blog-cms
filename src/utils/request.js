@@ -40,6 +40,9 @@ export async function request(options) {
     }
   } catch (error) {
     Message.error(`请求失败：${error}`);
+    if (!options.url.includes('login') && error.response.status === 401) {
+      location.href = '/user/login';
+    }
     throw error;
   }
 }
@@ -138,8 +141,6 @@ function handleResponse(response) {
   // normally the key is `status` or `code`
   if (status === 200 || status === 204) {
     return { data };
-  } else if (status === 401) {
-    location.href = '/user/login';
   } else {
     const error = new Error(data.message || '后端接口异常');
     return { error };

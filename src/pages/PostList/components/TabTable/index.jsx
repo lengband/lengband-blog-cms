@@ -24,9 +24,17 @@ function TabTable(props) {
   const [tabKey, setTabKey] = useState(tabs[0].key);
 
   const fetchPost = async function () {
+    const params = {};
+    if (tabKey === 'released') {
+      params.released = true;
+    }
+    if (tabKey === 'review') {
+      params.released = false;
+    }
     try {
       const { data } = await request({
         url: api.getPostList().url,
+        params,
       });
       setDataSource({
         [tabKey]: data.data,
@@ -90,11 +98,16 @@ function TabTable(props) {
       key: 'type.cn_name',
     },
     {
+      title: '简介',
+      dataIndex: 'introduce',
+      key: 'introduce',
+    },
+    {
       title: '是否发布',
-      dataIndex: 'is_publish',
-      key: 'is_publish',
+      dataIndex: 'released',
+      key: 'released',
       render: (value, index, record) => {
-        if (record.is_publish) {
+        if (record.released) {
           return <IceLabel status="success">已发布</IceLabel>;
         }
         return <IceLabel status="default">未发布</IceLabel>;

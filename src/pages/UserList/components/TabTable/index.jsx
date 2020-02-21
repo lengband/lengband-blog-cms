@@ -4,6 +4,8 @@ import moment from 'moment';
 import { withRouter } from 'react-router';
 import { Message, Button } from '@alifd/next';
 import IceContainer from '@icedesign/container';
+import IceLabel from '@icedesign/label';
+
 import CustomTable from './components/CustomTable';
 import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
@@ -53,6 +55,12 @@ function TabTable(props) {
       dataIndex: 'role',
       key: 'role',
       width: 100,
+      render: (value, index, record) => {
+        if (record.role === 'admin') {
+          return <IceLabel status="primary">管理员</IceLabel>
+        }
+        return <IceLabel status="default">用户</IceLabel>
+      }
     },
     {
       title: '邮箱',

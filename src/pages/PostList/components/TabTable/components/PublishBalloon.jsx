@@ -8,7 +8,7 @@ export default function DeleteBalloon(props) {
 
   function handleHide(code) {
     if (code === 1) {
-      props.handlePublish({ is_publish: !props.record.is_publish });
+      props.handlePublish({ released: !props.record.released });
     }
     setVisible(false);
   }
@@ -17,7 +17,7 @@ export default function DeleteBalloon(props) {
     setVisible(visibleStatus);
   }
 
-  const text = props.record.is_publish ? '下架' : '发布';
+  const text = props.record.released ? '下架' : '发布';
 
   const visibleTrigger = (
     <Button type="secondary" warning>

@@ -40,7 +40,7 @@ function ContentEditor(props) {
   });
   const [value, setValue] = useState({
     name: '',
-    instroduce: '',
+    introduce: '',
     content: '',
     type: '',
     tags: [],
@@ -71,7 +71,7 @@ function ContentEditor(props) {
      });
       setValue({
         name: data.name,
-        instroduce: data.instroduce,
+        introduce: data.introduce,
         content: data.content,
         type: data.type._id,
         tags: data.tags,
@@ -82,12 +82,12 @@ function ContentEditor(props) {
     }
   };
 
-  const changeContent = value => {
+  const changeContent = content => {
     setValue({
       ...value,
-      content: value,
+      content,
     });
-    setPreviewContent(value);
+    setPreviewContent(content);
   };
 
   const handleSubmit = () => {
@@ -191,9 +191,9 @@ function ContentEditor(props) {
                 </FormItem>
               </Col>
             </Row>
-            <FormItem label="描述">
-              <IceFormBinder name="instroduce">
-                <Input.TextArea placeholder="这里填写正文描述" />
+            <FormItem label="简介">
+              <IceFormBinder name="introduce">
+                <Input.TextArea placeholder="这里填写正文简介" />
               </IceFormBinder>
             </FormItem>
             <FormItem label="正文" required>
