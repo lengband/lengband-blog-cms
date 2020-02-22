@@ -83,4 +83,21 @@ export const api = {
     url: `/tag/${id}`,
     method: 'DELETE',
   }),
+  // 评论
+  getCommentList: () => ({
+    url: '/comment',
+    method: 'GET',
+  }),
+  addComment: () => ({
+    url: '/comment/create',
+    method: 'POST',
+  }),
+  updateComment: id => ({
+    url: `/comment/${id}`,
+    method: 'PATCH',
+  }),
+  delComment: id => ({
+    url: `/comment/${id}`,
+    method: 'DELETE',
+  }),
 };

@@ -1093,6 +1093,15 @@
     "@alifd/next" "^1.x"
     prop-types "^15.5.8"
 
+"@icedesign/ellipsis@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@icedesign/ellipsis/-/ellipsis-1.0.4.tgz#28440874e170ecd547d8f79e4d5aae036c2a12ab"
+  integrity sha512-3u4C3PN30chF3mdQjs4XtqYAKVPNB+C+qAdGIAe2EvViYNfi4tpjKlIRNpSNycqtG5+lO1hAMB+v6NMBBJMlhg==
+  dependencies:
+    "@alifd/next" "^1.x"
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
+
 "@icedesign/form-binder@^1.x":
   version "1.0.6"
   resolved "http://r.cnpmjs.org/@icedesign/form-binder/download/@icedesign/form-binder-1.0.6.tgz#e845f9ec6a6db8859540ee531a2c7053d9689f57"
