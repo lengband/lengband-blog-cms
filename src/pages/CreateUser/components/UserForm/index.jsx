@@ -129,7 +129,7 @@ function UserForm(props) {
                     placeholder="请选择..."
                     dataSource={[
                       { label: '管理员', value: 'admin' },
-                      { label: '用户', value: 'member' },
+                      { label: '用户', value: 'user' },
                     ]}
                   />
                 </IceFormBinder>
