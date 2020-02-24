@@ -21,6 +21,7 @@ import stores from '@/stores';
 import styles from './index.module.scss';
 import { request } from '@/utils/request';
 import { api, baseURL } from '@/utils/api';
+import { getToken } from '@/utils/auth'
 
 const { Row, Col } = Grid;
 const { Group: RadioGroup } = Radio;
@@ -64,6 +65,17 @@ export default function SettingsForm() {
       description: userInfo.description,
     })
   };
+
+  const beforeUpload = () => {
+    const token = getToken();
+    const config = {
+      headers: {}
+    }
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config
+  }
 
 
   const handleUpdate = async (data) => {
@@ -134,7 +146,8 @@ export default function SettingsForm() {
                     listType="card"
                     limit={1}
                     autoUpload={false}
-                    action={`${window.location.origin}${baseURL}/upload`}
+                    beforeUpload={beforeUpload}
+                    action={`${window.location.origin}${baseURL}/user/upload`}
                     ref={childRef}
                     accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
                   />

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import marked from 'marked';
 import hljs from "highlight.js";
 // highlight.js 样式demo：https://highlightjs.org/static/demo/
 import 'highlight.js/styles/github.css';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Form, Button, Select, Message } from '@alifd/next';
+import { Input, Grid, Form, Button, Select, Message, Upload, Icon } from '@alifd/next';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -17,7 +17,8 @@ import _ from 'lodash';
 import Markdown from './Markdown';
 import styles from './index.module.scss';
 import { useRequest, request } from '@/utils/request';
-import { api } from '@/utils/api';
+import { api, baseURL } from '@/utils/api';
+import { getToken } from '@/utils/auth';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
@@ -38,12 +39,19 @@ function ContentEditor(props) {
       return hljs.highlightAuto(code).value;
     },
   });
+
+  const updatePostId = props.match.params.id;
+  const uploadRef = useRef();
+
+  const [uploadPostId, updateUploadPostId] = useState(null);
+
   const [value, setValue] = useState({
     name: '',
     introduce: '',
     content: '',
     type: '',
     tags: [],
+    cover: [],
   });
   const [markdownContent, setMarkdownContent] = useState('预览内容'); // html内容
 
@@ -75,6 +83,11 @@ function ContentEditor(props) {
         content: data.content,
         type: data.type._id,
         tags: data.tags,
+        cover: data.cover ? [{
+          url: data.cover,
+          name: '',
+          state: 'done',
+        }] : [],
       });
       setPreviewContent(data.content);
     } catch (error) {
@@ -90,17 +103,71 @@ function ContentEditor(props) {
     setPreviewContent(content);
   };
 
+  const beforeUpload = () => {
+    const token = getToken();
+    const config = {
+      headers: {},
+      data: {
+        id: uploadPostId,
+      },
+    };
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  };
+
+  const uploadCover = async () => {
+    const ref = uploadRef.current.getInstance();
+    await ref.startUpload();
+    return true;
+  };
+
+  const extraRender = file => {
+    const onClick = () => {
+      window.open(file.url);
+    };
+    return (<Button type="secondary" className="ml-5" size="small" onClick={onClick}><Icon type="picture" />查看封面</Button>);
+  };
+
+  const createPost = async (values) => {
+    const { url, method } = api.addPost();
+    const data = _.cloneDeep(values);
+    delete data.cover;
+    const { data: postRes } = await request({
+      url,
+      method,
+      data,
+    });
+    updateUploadPostId(postRes._id);
+    await uploadCover(values.cover);
+    return true;
+  };
+
+  const updatePost = async (values) => {
+    const { url, method } = api.updatePost(updatePostId);
+    const data = _.cloneDeep(values);
+    delete data.cover;
+    await request({
+      url,
+      method,
+      data,
+    });
+    updateUploadPostId(updatePostId);
+    await uploadCover(values.cover);
+    return true;
+  };
+
   const handleSubmit = () => {
     formRef.validateAll(async (errors, values) => {
       if (errors) {
         return false;
       }
-      const { url, method } = api.addPost();
-      await request({
-        url,
-        method,
-        data: values,
-     });
+      if (updatePostId) {
+        await updatePost(values);
+      } else {
+        await createPost(values);
+      }
       Message.success('提交成功');
       props.history.push('/post/list');
     });
@@ -109,8 +176,8 @@ function ContentEditor(props) {
   useEffect(() => {
     fetchType();
     fetchTag();
-    if (props.match.params.id) {
-      fetchPost(props.match.params.id);
+    if (updatePostId) {
+      fetchPost(updatePostId);
     }
   }, []);
 
@@ -171,7 +238,6 @@ function ContentEditor(props) {
                   <IceFormError
                     name="type"
                     render={(errors) => {
-                      console.log('errors', errors);
                       return (
                         <div>
                           <span style={{ color: 'red' }}>
@@ -188,6 +254,22 @@ function ContentEditor(props) {
                       );
                     }}
                   />
+                </FormItem>
+              </Col>
+              <Col span="11" offset="1">
+                <FormItem label="封面">
+                  <IceFormBinder name="cover">
+                    <Upload.Card
+                      listType={updatePostId ? 'image' : 'card'}
+                      extraRender={extraRender}
+                      limit={1}
+                      autoUpload={false}
+                      beforeUpload={beforeUpload}
+                      action={`${window.location.origin}${baseURL}/post/${uploadPostId}/upload`}
+                      ref={uploadRef}
+                      accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
+                    />
+                  </IceFormBinder>
                 </FormItem>
               </Col>
             </Row>

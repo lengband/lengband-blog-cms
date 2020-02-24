@@ -103,6 +103,24 @@ function TabTable(props) {
       key: 'introduce',
     },
     {
+      title: '文章封面',
+      dataIndex: 'cover',
+      key: 'cover',
+      render: (value, index, record) => {
+        if (!record.cover) return '暂无';
+        return (
+          <img
+            style={{
+              verticalAlign: 'middle',
+              width: '80px',
+            }}
+            src={record.cover}
+            alt={record.cover}
+          />
+        );
+      },
+    },
+    {
       title: '是否发布',
       dataIndex: 'released',
       key: 'released',

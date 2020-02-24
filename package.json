@@ -43,7 +43,7 @@
     "stylelint": "^10.1.0"
   },
   "scripts": {
-    "start": "ice-scripts dev",
+    "dev": "ice-scripts dev",
     "build": "ice-scripts build",
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint --cache --ext .js,.jsx ./",
