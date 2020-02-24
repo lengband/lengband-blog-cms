@@ -8,6 +8,7 @@
     "@ice/form": "^0.1.5",
     "@ice/store": "^0.4.7",
     "@icedesign/container": "^1.x",
+    "@icedesign/ellipsis": "1.0.4",
     "@icedesign/form-binder": "^1.x",
     "@icedesign/foundation-symbol": "^1.x",
     "@icedesign/img": "^1.x",

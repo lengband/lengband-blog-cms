@@ -1,6 +1,7 @@
 import { useReducer } from 'react';
 import axios from 'axios';
 import { Message } from '@alifd/next';
+import _ from 'lodash';
 import { baseURL } from './api';
 import { getToken } from './auth';
 
@@ -15,6 +16,7 @@ const http = axios.create({
 http.interceptors.request.use(c => {
   const config = c;
   if (config.url.includes('login')) {
+    config.headers['X-auth-view'] = 'admin';
     return config;
   }
   const token = getToken();
@@ -39,7 +41,9 @@ export async function request(options) {
       return { response, data };
     }
   } catch (error) {
-    Message.error(`请求失败：${error}`);
+    const resData = error.response.data;
+    const errorStr = _.isString(resData.message) ? resData.message : error;
+    Message.error(`请求失败：${errorStr}`);
     if (!options.url.includes('login') && error.response.status === 401) {
       location.href = '/user/login';
     }
