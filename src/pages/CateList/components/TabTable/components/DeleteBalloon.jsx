@@ -26,21 +26,23 @@ export default function DeleteBalloon(props) {
   const content = (
     <div>
       <div className={styles.contentText}>确认删除？</div>
-      <Button
-        id="confirmBtn"
-        type="normal"
-        warning
-        className={styles.button}
-        onClick={() => handleHide(1)}
-      >
-        确认
-      </Button>
-      <Button
-        id="cancelBtn"
-        onClick={() => handleHide(0)}
-      >
-        关闭
-      </Button>
+      <div className="d-flex">
+        <Button
+          id="confirmBtn"
+          type="normal"
+          warning
+          className={styles.button}
+          onClick={() => handleHide(1)}
+        >
+          确认
+        </Button>
+        <Button
+          id="cancelBtn"
+          onClick={() => handleHide(0)}
+        >
+          关闭
+        </Button>
+      </div>
     </div>
   );
 

@@ -209,15 +209,12 @@ export default function SettingsForm() {
                 <IceFormBinder
                   type="url"
                   name="website"
-                  required
-                  message="请输入正确的网站地址"
                 >
                   <Input
                     type="url"
                     placeholder="https://github.com/lengband"
                   />
                 </IceFormBinder>
-                <IceFormError name="website" />
               </Col>
             </Row>
 
@@ -229,14 +226,11 @@ export default function SettingsForm() {
                 <IceFormBinder
                   type="url"
                   name="github"
-                  required
-                  message="请输入正确的 Github 地址"
                 >
                   <Input
                     placeholder="https://github.com/lengband"
                   />
                 </IceFormBinder>
-                <IceFormError name="github" />
               </Col>
             </Row>
 

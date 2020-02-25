@@ -51,6 +51,24 @@ function TabTable(props) {
       width: 100,
     },
     {
+      title: '头像',
+      dataIndex: 'avatar',
+      key: 'avatar',
+      render: (value, index, record) => {
+        if (!record.avatar) return '暂无';
+        return (
+          <img
+            style={{
+              verticalAlign: 'middle',
+              width: '80px',
+            }}
+            src={record.avatar}
+            alt={record.avatar}
+          />
+        );
+      },
+    },
+    {
       title: '角色',
       dataIndex: 'role',
       key: 'role',
@@ -109,6 +127,7 @@ function TabTable(props) {
             <Button type="secondary" onClick={() => changePwd(record._id)}>修改密码</Button>
             <DeleteBalloon
               handleRemove={() => handleRemove(value, index, record)}
+              disabled={record.role === 'admin'}
             />
           </div>
         );

@@ -12,6 +12,7 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 import IcePanel from '@icedesign/panel';
+import IceLabel from '@icedesign/label';
 import _ from 'lodash';
 
 import Markdown from './Markdown';
@@ -62,6 +63,15 @@ function ContentEditor(props) {
   const {  response: tagList, request: fetchTag } = useRequest({
     url: api.getTagList().url,
   });
+
+  const itemRender = item => {
+    if (!item.value) return ''; // 兼容 valueRender
+    return (
+      <span>
+        <IceLabel inverse={false} status={item.tag_status}>{item.label}</IceLabel>
+      </span>
+    );
+  };
 
   const formChange = formValue => setValue(formValue);
 
@@ -214,7 +224,9 @@ function ContentEditor(props) {
                       style={{ width: '100%' }}
                       mode="multiple"
                       placeholder="请选择分类"
-                      dataSource={(_.get(tagList, 'data.data') || []).map(v => ({ value: v._id, label: v.cn_name }))}
+                      itemRender={itemRender}
+                      valueRender={itemRender}
+                      dataSource={(_.get(tagList, 'data.data') || []).map(v => ({ ...v, value: v._id, label: v.cn_name }))}
                     />
                   </IceFormBinder>
                   <IceFormError name="tags" />
