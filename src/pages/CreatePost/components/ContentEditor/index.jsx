@@ -117,9 +117,6 @@ function ContentEditor(props) {
     const token = getToken();
     const config = {
       headers: {},
-      data: {
-        id: uploadPostId,
-      },
     };
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -285,9 +282,9 @@ function ContentEditor(props) {
                 </FormItem>
               </Col>
             </Row>
-            <FormItem label="简介">
+            <FormItem label="前言">
               <IceFormBinder name="introduce">
-                <Input.TextArea placeholder="这里填写正文简介" />
+                <Input.TextArea placeholder="这里填写前言" />
               </IceFormBinder>
             </FormItem>
             <FormItem label="正文" required>

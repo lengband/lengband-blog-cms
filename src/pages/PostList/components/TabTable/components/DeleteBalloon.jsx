@@ -3,6 +3,8 @@ import { Button, Balloon } from '@alifd/next';
 import PropTypes from 'prop-types';
 import styles from './index.module.scss';
 
+const Tooltip = Balloon.Tooltip;
+
 export default function DeleteBalloon(props) {
   const [visible, setVisible] = useState(false);
 
@@ -18,7 +20,11 @@ export default function DeleteBalloon(props) {
   }
 
   const visibleTrigger = (
-    <Button type="secondary" warning>
+    props.disabled ?
+    (<Tooltip
+      trigger={<Button disabled warning>删除</Button>}
+      >该文章已上架，无法删除</Tooltip>) :
+    <Button warning>
       删除
     </Button>
   );

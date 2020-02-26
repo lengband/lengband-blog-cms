@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '@icedesign/layout';
 import { withRouter } from 'react-router';
 import { Message } from '@alifd/next';
-import { decodeToken } from '@/utils/auth';
+import { decodeToken, verifyToken } from '@/utils/auth';
 
 import Header from './components/Header';
 import Aside from './components/Aside';
@@ -16,6 +16,12 @@ const BasicLayout = props => {
     Message.warning('请先登录后重试');
     return false;
   }
+  verifyToken().then(res => {
+    if (!res.validate) {
+      props.history.push('/user/login');
+      Message.warning(`Token失效，请重新登录。For: ${res.error.message}`);
+    }
+  });
   return (
     <div className={styles.iceDesignLayout}>
       <Layout>

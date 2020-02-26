@@ -4,11 +4,15 @@ import { decodeToken } from '@/utils/auth';
 
 export default {
   userInfo: decodeToken() || {},
-  async fetchUserInfo(id = decodeToken()._id) {
+  async fetchUserInfo(id = decodeToken() ? decodeToken()._id : null) {
     const { data } = await request({
       url: api.getUserInfo(id).url,
     });
-    if (id === decodeToken()._id) { // 说明是当前登录人
+    const token = decodeToken();
+    if (!id || !token) {
+      return {};
+    }
+    if (id === token._id) { // 说明是当前登录人
       this.userInfo = data;
     }
     return data;

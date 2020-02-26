@@ -113,6 +113,7 @@ export default function TabTable() {
               handleUpdate={(formData) => handleUpdate(formData, record._id)}
             />
             <DeleteBalloon
+              disabled={!!record.post_num}
               handleRemove={() => handleRemove(value, index, record)}
             />
           </span>

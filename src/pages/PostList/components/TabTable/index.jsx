@@ -10,6 +10,7 @@ import DeleteBalloon from './components/DeleteBalloon';
 import PublishBalloon from './components/PublishBalloon';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
+import styles from './components/index.module.scss';
 
 const TabPane = Tab.Item;
 
@@ -98,9 +99,13 @@ function TabTable(props) {
       key: 'type.cn_name',
     },
     {
-      title: '简介',
+      title: '前言',
       dataIndex: 'introduce',
       key: 'introduce',
+      width: 200,
+      render: (value, index, record) => {
+        return <div className={styles['text-truncate-mutiple-2']}>{ record.introduce }</div>;
+      },
     },
     {
       title: '文章封面',
@@ -171,6 +176,7 @@ function TabTable(props) {
               编辑
             </Button>
             <DeleteBalloon
+              disabled={record.released}
               handleRemove={() => handleRemove(value, index, record)}
             />
             <PublishBalloon

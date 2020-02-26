@@ -3,7 +3,7 @@ import './styles/index.scss';
 import moment from 'moment';
 import router from './router';
 
-moment.defaultFormat = 'YYYY-MM-DD HH:mm:ss';
+moment.defaultFormat = 'YYYY-MM-DD';
 
 const ICE_CONTAINER = document.getElementById('ice-container');
 
