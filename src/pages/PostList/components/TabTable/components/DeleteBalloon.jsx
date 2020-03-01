@@ -22,6 +22,7 @@ export default function DeleteBalloon(props) {
   const visibleTrigger = (
     props.disabled ?
     (<Tooltip
+      align="t"
       trigger={<Button disabled warning>删除</Button>}
       >该文章已上架，无法删除</Tooltip>) :
     <Button warning>

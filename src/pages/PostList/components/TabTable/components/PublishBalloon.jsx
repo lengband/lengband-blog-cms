@@ -31,8 +31,7 @@ export default function DeleteBalloon(props) {
       <div className="d-flex justify-content-between">
         <Button
           id="confirmBtn"
-          type="normal"
-          warning
+          type="primary"
           style={{ marginRight: '5px' }}
           onClick={() => handleHide(1)}
         >

@@ -98,7 +98,7 @@ export default function DataStatistics() {
           >
             <Axis name="month" />
             <Axis name="value" />
-            <Tooltip crosshairs={{ type: 'y' }} />
+            <Tooltip align="t" crosshairs={{ type: 'y' }} />
             <Geom type="interval" position="month*users" />
           </Chart>
         </Col>
