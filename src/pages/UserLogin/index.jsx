@@ -10,7 +10,7 @@ import IceIcon from '@icedesign/foundation-symbol';
 import styles from './index.module.scss';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
-import { setToken, removeToken } from '@/utils/auth';
+import { setToken } from '@/utils/auth';
 
 const UserLogin = props => {
   const [value, setValue] = useState({
@@ -44,7 +44,7 @@ const UserLogin = props => {
   };
 
   useEffect(() => {
-    removeToken();
+    // removeToken();
   }, []);
 
   return (

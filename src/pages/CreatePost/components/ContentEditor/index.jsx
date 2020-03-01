@@ -92,7 +92,7 @@ function ContentEditor(props) {
         introduce: data.introduce,
         content: data.content,
         type: data.type._id,
-        tags: data.tags,
+        tags: data.tags.map(v => v._id),
         cover: data.cover ? [{
           url: data.cover,
           name: '',
@@ -134,7 +134,10 @@ function ContentEditor(props) {
     const onClick = () => {
       window.open(file.url);
     };
-    return (<Button type="secondary" className="ml-5" size="small" onClick={onClick}><Icon type="picture" />查看封面</Button>);
+    if (updatePostId) {
+      return (<Button type="secondary" className="ml-5" size="small" onClick={onClick}><Icon type="picture" />查看封面</Button>);
+    }
+    return null;
   };
 
   const createPost = async (values) => {
@@ -304,7 +307,7 @@ function ContentEditor(props) {
                   预览
                 </IcePanel.Header>
                 <IcePanel.Body>
-                  <div dangerouslySetInnerHTML={{ __html: markdownContent }} />
+                  <div dangerouslySetInnerHTML={{ __html: markdownContent }} className={styles['markdown-editor']} />
                 </IcePanel.Body>
               </IcePanel>
             </FormItem>

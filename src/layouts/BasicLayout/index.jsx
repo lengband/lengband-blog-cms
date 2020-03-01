@@ -13,6 +13,7 @@ const BasicLayout = props => {
   const token = decodeToken();
   if (!token) {
     props.history.push('/user/login');
+    console.log(token, 'token');
     Message.warning('请先登录后重试');
     return false;
   }
