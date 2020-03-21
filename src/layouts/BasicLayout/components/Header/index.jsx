@@ -8,6 +8,7 @@ import { headerMenuConfig } from '@/menuConfig';
 import Logo from '../Logo';
 import styles from './index.module.scss';
 import stores from '@/stores';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 export default function Header(props) {
   const { isMobile, className, style } = props;
@@ -90,13 +91,13 @@ export default function Header(props) {
         >
           <ul>
             <li className={styles.userProfileMenuItem}>
-              <Link to="/setting/basic">
+              <Link to={`${ROUTER_BASE_PATH  }/setting/basic`}>
                 <FoundationSymbol type="repair" size="small" />
                 设置
               </Link>
             </li>
             <li className={styles.userProfileMenuItem}>
-              <Link to="/user/login">
+              <Link to={`${ROUTER_BASE_PATH  }/user/login`}>
                 <FoundationSymbol type="compass" size="small" />
                 退出
               </Link>

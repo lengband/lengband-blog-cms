@@ -16,23 +16,24 @@ import EditPassword from '@/pages/EditPassword';
 import BasicSetting from '@/pages/BasicSetting';
 import NavigationSetting from '@/pages/NavigationSetting';
 import NotFound from '@/pages/NotFound';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const routerConfig = [
   {
-    path: '/user',
+    path: `${ROUTER_BASE_PATH  }/user`,
     component: UserLayout,
     children: [
       {
-        path: '/login',
+        path: 'login',
         component: UserLogin,
       },
       {
-        path: '/register',
+        path: 'register',
         component: UserRegister,
       },
       {
         path: '/',
-        redirect: '/user/login',
+        redirect: `${ROUTER_BASE_PATH  }/user/login`,
       },
       {
         component: NotFound,
@@ -40,7 +41,7 @@ const routerConfig = [
     ],
   },
   {
-    path: '/',
+    path: ROUTER_BASE_PATH,
     component: BasicLayout,
     children: [
       {
@@ -101,7 +102,7 @@ const routerConfig = [
       },
       {
         path: '/',
-        redirect: '/dashboard/monitor',
+        redirect: `${ROUTER_BASE_PATH  }/dashboard/monitor`,
       },
       {
         component: NotFound,

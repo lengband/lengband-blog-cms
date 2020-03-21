@@ -11,6 +11,7 @@ import styles from './index.module.scss';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
 import { setToken } from '@/utils/auth';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const UserLogin = props => {
   const [value, setValue] = useState({
@@ -39,8 +40,14 @@ const UserLogin = props => {
      });
      setToken(data.token);
       Message.success('登录成功');
-      props.history.push('/');
+      props.history.push(ROUTER_BASE_PATH);
     });
+  };
+
+  const onKeyDown = e => {
+    if (e.keyCode === 13) {
+      handleSubmit(e);
+    }
   };
 
   useEffect(() => {
@@ -64,6 +71,7 @@ const UserLogin = props => {
                 maxLength={20}
                 placeholder="用户名"
                 className={styles.inputCol}
+                onKeyDown={onKeyDown}
               />
             </IceFormBinder>
             <IceFormError name="name" />
@@ -78,6 +86,7 @@ const UserLogin = props => {
                 placeholder="密码"
                 className={styles.inputCol}
                 onPressEnter={handleSubmit}
+                onKeyDown={onKeyDown}
               />
             </IceFormBinder>
             <IceFormError name="password" />
@@ -98,7 +107,7 @@ const UserLogin = props => {
             >
               登 录
             </Button>
-            <Link to="/user/register" className={styles.tips}>
+            <Link to={`${ROUTER_BASE_PATH  }/user/register`} className={styles.tips}>
               立即注册
             </Link>
           </div>

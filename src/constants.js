@@ -8,3 +8,9 @@ export const tagTypeOpts = [
 ];
 
 export const ROUTER_BASE_PATH = '/admin';
+
+export const isDev = process.env.NODE_ENV === 'development';
+
+export const BLOG_PREFIX = isDev ? 'http://localhost:8080/blog' : '/blog';
+
+window.isDev = isDev;
