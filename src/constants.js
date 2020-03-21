@@ -6,3 +6,5 @@ export const tagTypeOpts = [
   {value: 'info', label: 'lightblue', title: 'lightblue' },
   {value: 'danger', label: 'red', title: 'red' },
 ];
+
+export const ROUTER_BASE_PATH = '/admin';
