@@ -11,6 +11,7 @@ import PublishBalloon from './components/PublishBalloon';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
 import styles from './components/index.module.scss';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const TabPane = Tab.Item;
 
@@ -84,7 +85,7 @@ function TabTable(props) {
 
   const pushUpdate = id => {
     const { history } = props;
-    history.push(`/post/update/${id}`);
+    history.push(`${ROUTER_BASE_PATH}/post/update/${id}`);
   };
 
   const columns = [

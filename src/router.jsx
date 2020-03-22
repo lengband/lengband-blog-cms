@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import path from 'path';
 
 import routes from './routerConfig';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const RouteItem = (props) => {
   const { redirect, path: routePath, component, key } = props;
@@ -69,6 +70,11 @@ const router = () => {
             />
           );
         })}
+        <Redirect
+          exact
+          from="/"
+          to={ROUTER_BASE_PATH}
+        />
       </Switch>
     </Router>
   );

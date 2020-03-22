@@ -11,6 +11,7 @@ import cx from 'classnames';
 import styles from './index.module.scss';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const { Row, Col } = Grid;
 const Toast = Message;
@@ -38,7 +39,7 @@ function SimpleFluencyForm(props) {
         data: values,
      });
       Toast.success('添加成功');
-      props.history.push('/cate/list');
+      props.history.push(`${ROUTER_BASE_PATH}/cate/list`);
     });
   };
 

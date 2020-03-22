@@ -91,13 +91,13 @@ export default function Header(props) {
         >
           <ul>
             <li className={styles.userProfileMenuItem}>
-              <Link to={`${ROUTER_BASE_PATH  }/setting/basic`}>
+              <Link to={`${ROUTER_BASE_PATH}/setting/basic`}>
                 <FoundationSymbol type="repair" size="small" />
                 设置
               </Link>
             </li>
             <li className={styles.userProfileMenuItem}>
-              <Link to={`${ROUTER_BASE_PATH  }/user/login`}>
+              <Link to={`${ROUTER_BASE_PATH}/user/login`}>
                 <FoundationSymbol type="compass" size="small" />
                 退出
               </Link>

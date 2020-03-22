@@ -11,6 +11,7 @@ import EditDialog from './components/EditDialog';
 import DeleteBalloon from './components/DeleteBalloon';
 import { useRequest, request } from '@/utils/request';
 import { api } from '@/utils/api';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 function TabTable(props) {
   const { response: userList, request: fetchUser } = useRequest({
@@ -29,7 +30,7 @@ function TabTable(props) {
 
   const changePwd = (id) => {
     const { history } = props;
-    history.push(`/users/pwd/${id}`);
+    history.push(`${ROUTER_BASE_PATH}/users/pwd/${id}`);
   }
 
   const handleUpdate = async (data, id) => {

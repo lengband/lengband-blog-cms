@@ -11,6 +11,7 @@ import stores from '@/stores';
 import { api } from '@/utils/api';
 import { request } from '@/utils/request';
 import styles from './index.module.scss';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const { Row, Col } = Grid;
 const Toast = Message;
@@ -68,7 +69,7 @@ function ChangePasswordForm(props) {
       });
       Toast.success('修改成功');
       if (!props.match.params.id) {
-        props.history.push('/user/login');
+        props.history.push(`${ROUTER_BASE_PATH}/user/login`);
       }
     });
   };

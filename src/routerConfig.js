@@ -20,7 +20,7 @@ import { ROUTER_BASE_PATH } from '@/constants';
 
 const routerConfig = [
   {
-    path: `${ROUTER_BASE_PATH  }/user`,
+    path: `${ROUTER_BASE_PATH}/user`,
     component: UserLayout,
     children: [
       {
@@ -33,7 +33,7 @@ const routerConfig = [
       },
       {
         path: '/',
-        redirect: `${ROUTER_BASE_PATH  }/user/login`,
+        redirect: `${ROUTER_BASE_PATH}/user/login`,
       },
       {
         component: NotFound,
@@ -102,7 +102,7 @@ const routerConfig = [
       },
       {
         path: '/',
-        redirect: `${ROUTER_BASE_PATH  }/dashboard/monitor`,
+        redirect: `${ROUTER_BASE_PATH}/dashboard/monitor`,
       },
       {
         component: NotFound,

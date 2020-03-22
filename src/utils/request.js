@@ -4,6 +4,7 @@ import { Message } from '@alifd/next';
 import _ from 'lodash';
 import { baseURL } from './api';
 import { getToken } from './auth';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 // 新创建一个axios实例，并进行基础配置
 const http = axios.create({
@@ -45,7 +46,7 @@ export async function request(options) {
     const errorStr = _.isString(resData.message) ? resData.message : error;
     Message.error(`请求失败：${errorStr}`);
     if (!options.url.includes('login') && error.response.status === 401) {
-      location.href = '/user/login';
+      location.href = `${ROUTER_BASE_PATH}/user/login`;
     }
     throw error;
   }

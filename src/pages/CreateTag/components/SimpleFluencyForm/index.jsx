@@ -12,7 +12,7 @@ import IceLabel from '@icedesign/label';
 import styles from './index.module.scss';
 import { request } from '@/utils/request';
 import { api } from '@/utils/api';
-import { tagTypeOpts } from '@/constants';
+import { tagTypeOpts, ROUTER_BASE_PATH } from '@/constants';
 
 const { Row, Col } = Grid;
 const Toast = Message;
@@ -51,7 +51,7 @@ function SimpleFluencyForm(props) {
         data: values,
      });
       Toast.success('添加成功');
-      props.history.push('/tag/list');
+      props.history.push(`${ROUTER_BASE_PATH}/tag/list`);
     });
   };
 

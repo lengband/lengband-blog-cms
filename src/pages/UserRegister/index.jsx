@@ -64,7 +64,7 @@ const UserRegister = (props) => {
         data,
      });
       Message.success('注册成功');
-      props.history.push(`${ROUTER_BASE_PATH  }/user/login`);
+      props.history.push(`${ROUTER_BASE_PATH}/user/login`);
     });
   };
 
@@ -152,7 +152,7 @@ const UserRegister = (props) => {
             >
               注 册
             </Button>
-            <Link to={`${ROUTER_BASE_PATH  }/user/login`} className={styles.tips}>
+            <Link to={`${ROUTER_BASE_PATH}/user/login`} className={styles.tips}>
               使用已有账户登录
             </Link>
           </div>

@@ -8,6 +8,7 @@ import IceEllipsis from '@icedesign/ellipsis';
 import { useRequest } from '@/utils/request';
 import { api } from '@/utils/api';
 import styles from './index.module.scss';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const { Row, Col } = Grid;
 
@@ -89,14 +90,14 @@ export default () => {
           <IceContainer className={styles.cardContainer}>
             <h3 className={styles.cardTitle}>
               最新文章
-              <a href="#" className={cx(styles.more, 'link')}>
+              <a href={`${ROUTER_BASE_PATH}/post/list`} className={cx(styles.more, 'link')}>
                 更多
               </a>
             </h3>
             <div className={styles.items}>
               {dataSource.posts.map((item, index) => {
                 return (
-                  <a key={index} href="#" className={cx(styles.item, 'link')}>
+                  <a key={index} href={`${ROUTER_BASE_PATH}/post/update/${item._id}`} className={cx(styles.item, 'link')}>
                     <IceEllipsis lineNumber={1} text={item.name} />
                     <div className={styles.itemTime}>{moment(item.updatedAt).format()}</div>
                   </a>

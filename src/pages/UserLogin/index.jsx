@@ -107,7 +107,7 @@ const UserLogin = props => {
             >
               登 录
             </Button>
-            <Link to={`${ROUTER_BASE_PATH  }/user/register`} className={styles.tips}>
+            <Link to={`${ROUTER_BASE_PATH}/user/register`} className={styles.tips}>
               立即注册
             </Link>
           </div>

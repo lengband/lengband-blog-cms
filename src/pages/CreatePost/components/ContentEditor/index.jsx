@@ -20,6 +20,7 @@ import styles from './index.module.scss';
 import { useRequest, request } from '@/utils/request';
 import { api, baseURL } from '@/utils/api';
 import { getToken } from '@/utils/auth';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const { Row, Col } = Grid;
 const FormItem = Form.Item;
@@ -179,7 +180,7 @@ function ContentEditor(props) {
         await createPost(values);
       }
       Message.success('提交成功');
-      props.history.push('/post/list');
+      props.history.push(`${ROUTER_BASE_PATH}/post/list`);
     });
   };
 

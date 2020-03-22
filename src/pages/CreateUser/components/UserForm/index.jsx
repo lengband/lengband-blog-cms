@@ -10,6 +10,7 @@ import {
 import { request } from '@/utils/request';
 import styles from './index.module.scss';
 import { api } from '@/utils/api';
+import { ROUTER_BASE_PATH } from '@/constants';
 
 const { Row, Col } = Grid;
 const Toast = Message;
@@ -61,7 +62,7 @@ function UserForm(props) {
         data: values,
      });
       Toast.success('添加成功');
-      props.history.push('/users/list');
+      props.history.push(`${ROUTER_BASE_PATH}/users/list`);
     });
   };
 
