@@ -16,7 +16,7 @@
     "@icedesign/layout": "^1.x",
     "@icedesign/panel": "1.0.4",
     "@icedesign/theme": "^1.x",
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "bizcharts": "3.1.0",
     "classnames": "^2.2.5",
     "enquire-js": "^0.1.2",
